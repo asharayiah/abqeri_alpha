@@ -1,4 +1,4 @@
-I/* Abqeri Safe-AI pane driver */
+/* Abqeri Safe-AI pane driver */
 
 (() => {
   const $ = (id) => document.getElementById(id);
