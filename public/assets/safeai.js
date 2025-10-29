@@ -1,154 +1,173 @@
-<script>
-/* Safe-AI chat (v2025-10-29): robust stream (SSE or NDJSON), no canned fallback, extra logs */
-(function(){
-  const log = (...a)=>console.log('[safeai]', ...a);
+/* Abqeri Safe-AI client — robust SSE streaming + Enter to submit
+   - clears any old canned content
+   - replaces old listeners
+   - decodes both {response:"..."} and {response:{0:..}} (bytes) shapes
+*/
+(() => {
+  const $ = (id) => document.getElementById(id);
 
-  const form = document.getElementById('chatForm');
-  const textarea = document.getElementById('chatInput');
-  const container = document.getElementById('chatContainer');
-  const statusDot = document.getElementById('abq-statusDot');
-  const statusText = document.getElementById('abq-statusText');
-  const provPath = document.getElementById('abq-provPath');
-  const provModel = document.getElementById('abq-provModel');
-  const provGuards = document.getElementById('abq-provGuards');
-
-  if (!form || !textarea || !container) {
-    log('missing DOM nodes; abort');
-    return;
+  function cloneReplace(node) {
+    const neo = node.cloneNode(true);
+    node.replaceWith(neo);
+    return neo;
   }
 
-  function addMsg(cls, text) {
-    const d = document.createElement('div');
-    d.className = 'msg ' + cls;
-    d.textContent = text;
-    container.appendChild(d);
-    container.scrollTop = container.scrollHeight;
-    return d;
-  }
-  function setStatus(hybrid, model, guards) {
-    if (!statusDot || !statusText) return;
-    statusDot.classList.remove('abq-dot-soft','abq-dot-hw');
-    if (hybrid) { statusDot.classList.add('abq-dot-hw'); statusText.textContent='Hybrid (Hardware-Backed)'; }
-    else { statusDot.classList.add('abq-dot-soft'); statusText.textContent='Software Fallback'; }
-    if (provPath) provPath.textContent = hybrid ? 'Hybrid (Hardware-Backed)' : 'Software fallback';
-    if (provModel && model) provModel.textContent = model;
-    if (provGuards) provGuards.textContent = (guards && guards.length) ? guards.join(', ') : 'None';
+  function appendText(el, text) {
+    el.textContent += text;
+    el.scrollTop = el.scrollHeight;
   }
 
-  // Kill any legacy canned insertion
-  const obs = new MutationObserver(muts=>{
-    for (const m of muts) for (const n of m.addedNodes) {
-      if (n.nodeType===1 && n.classList.contains('msg') && n.classList.contains('ai')) {
-        if (n.textContent && n.textContent.includes('We answer with mercy')) n.textContent = '…';
+  function langFromURL() {
+    const q = new URLSearchParams(location.search);
+    return (q.get('lang') || 'en').trim();
+  }
+
+  function updateMeta({ mode = 'General', safety = 'Moderate', lang = 'en', model = '@cf/meta/llama-3.1-8b-instruct', hybrid = false } = {}) {
+    const chip = $('chip-compute');
+    const mModel = $('meta-model');
+    const mMode = $('meta-mode');
+    const mSafety = $('meta-safety');
+    const mLang = $('meta-lang');
+    if (chip) chip.textContent = hybrid ? 'Hybrid' : 'Software';
+    if (mModel) mModel.textContent = model;
+    if (mMode) mMode.textContent = mode;
+    if (mSafety) mSafety.textContent = safety;
+    if (mLang) mLang.textContent = lang;
+  }
+
+  function decodeResponseChunk(obj) {
+    // Server may send: { response: "text" } OR { response: {0:97,1:98,...} }
+    if (typeof obj?.response === 'string') return obj.response;
+    if (obj?.response && typeof obj.response === 'object') {
+      try {
+        const bytes = new Uint8Array(Object.values(obj.response));
+        return new TextDecoder().decode(bytes);
+      } catch {
+        return '';
       }
     }
-  });
-  obs.observe(container, { childList:true });
+    return '';
+  }
 
-  async function callChat(query) {
-    const headers = {
-      'content-type':'application/json',
-      'accept': 'text/event-stream, application/x-ndjson, application/json'
-    };
-    const body = JSON.stringify({
-      messages:[{role:'user', content:query}],
-      lang: (document.documentElement.lang||'en')
+  async function wireSafeAI() {
+    const stream = $('chat-stream');
+    let form = $('chat-form');
+    let input = $('chat-input');
+    let send = $('chat-send');
+
+    if (!stream || !form || !input || !send) {
+      console.warn('[SafeAI] missing nodes', { stream: !!stream, form: !!form, input: !!input, send: !!send });
+      return;
+    }
+
+    // Kill any canned text and any old handlers by cloning the nodes
+    stream.textContent = '';
+    form = cloneReplace(form);
+    input = $('chat-input'); // re-grab, since replaced
+    send  = $('chat-send');
+
+    // Enter to submit (Shift+Enter = newline)
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        form.requestSubmit();
+      }
     });
 
-    log('POST /api/ai/chat …');
-    const res = await fetch('/api/ai/chat', {
-      method:'POST',
-      headers,
-      body,
-      cache:'no-store',
-    });
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const msg = (input.value || '').trim();
+      if (!msg) return;
 
-    log('POST status =', res.status, res.headers.get('content-type'));
-    if (!res.ok) throw new Error('service_error');
-    if (!res.body) throw new Error('no_stream');
+      const lang = langFromURL();
+      const payload = {
+        messages: [{ role: 'user', content: msg }],
+        mode: 'General',
+        safety: 'Moderate',
+        lang
+      };
 
-    const reader = res.body.getReader();
-    const dec = new TextDecoder();
-    let buf = '';
-    let metaSeen = false;
-    let suppressTokens = false;
+      // UI
+      appendText(stream, `\nYou: ${msg}\n\nAbqeri: `);
+      send.disabled = true;
 
-    const aiDiv = addMsg('ai','…');
+      try {
+        const res = await fetch('/api/ai/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
 
-    while (true) {
-      const { value, done } = await reader.read();
-      if (done) break;
-      buf += dec.decode(value, { stream:true });
-
-      let idx;
-      while ((idx = buf.indexOf('\n')) >= 0) {
-        let line = buf.slice(0, idx);
-        buf = buf.slice(idx + 1);
-        if (!line.trim()) continue;
-
-        if (line.startsWith('data:')) line = line.replace(/^data:\s*/,'').trim();
-        if (line === '[DONE]') { log('DONE'); break; }
-
-        try {
-          const obj = JSON.parse(line);
-
-          if (aiDiv.textContent.includes('We answer with mercy')) aiDiv.textContent = '…';
-
-          if (obj.meta && !metaSeen) {
-            metaSeen = true;
-            const guards = obj.meta.guardrails || [];
-            const prov = obj.meta.provenance || {};
-            setStatus(!!prov.hybrid, prov.model || '@cf/meta/llama-3.1-8b-instruct', guards.map(g => g.message || g.id).filter(Boolean));
-            if (obj.meta.action === 'restrict') {
-              aiDiv.textContent = '⚠️ ' + (guards.length ? guards.map(g=>g.message||g).join(' ') : 'Request blocked for safety reasons.');
-              suppressTokens = true;
-            }
-            continue;
-          }
-
-          let t = '';
-          if (typeof obj.token === 'string') t = obj.token;          // NDJSON
-          else if (typeof obj.response === 'string') t = obj.response; // SSE style you saw
-
-          if (t && !suppressTokens) {
-            if (aiDiv.textContent === '…') aiDiv.textContent = '';
-            aiDiv.textContent += t;
-          }
-        } catch (e) {
-          // Not JSON? ignore (keep streaming)
-          // log('non-JSON line:', line);
+        if (!res.ok || !res.body) {
+          appendText(stream, `\n[${res.status}] Service error.`);
+          return;
         }
+
+        const rdr = res.body.getReader();
+        const dec = new TextDecoder();
+        let buf = '';
+
+        // Read SSE stream
+        for (;;) {
+          const { done, value } = await rdr.read();
+          if (done) break;
+          buf += dec.decode(value, { stream: true });
+
+          // Process complete lines
+          let idx;
+          while ((idx = buf.indexOf('\n')) >= 0) {
+            const line = buf.slice(0, idx).trimEnd();
+            buf = buf.slice(idx + 1);
+            if (!line) continue;
+
+            // SSE format uses "data: <json>"
+            if (!line.startsWith('data:')) continue;
+            const json = line.slice(5).trim();
+
+            if (json === '[DONE]') {
+              appendText(stream, '\n');
+              break;
+            }
+
+            try {
+              const obj = JSON.parse(json);
+
+              // If it’s a meta block, update header chips
+              if (obj?.meta?.provenance || obj?.meta?.guardrails) {
+                const model = obj?.meta?.provenance?.model || undefined;
+                const hybrid = !!obj?.meta?.provenance?.hybrid;
+                const guards = obj?.meta?.guardrails || [];
+                const mode = guards.find(g => g.id === 'mode')?.message || 'General';
+                const safety = guards.find(g => g.id === 'safety')?.message || 'Moderate';
+                const langMsg = guards.find(g => g.id === 'lang')?.message || lang;
+                updateMeta({ model, hybrid, mode, safety, lang: langMsg });
+                continue;
+              }
+
+              // Regular token chunk
+              const piece = decodeResponseChunk(obj);
+              if (piece) appendText(stream, piece);
+            } catch {
+              // Ignore any non-JSON or keep-alive lines
+            }
+          }
+        }
+      } catch (err) {
+        appendText(stream, `\n[network] ${err?.message || err}`);
+      } finally {
+        send.disabled = false;
+        input.value = '';
+        input.focus();
       }
-    }
+    });
+
+    console.log('[SafeAI] wired');
   }
 
-  form.addEventListener('submit', (e)=>{
-    e.preventDefault();
-    const q = (textarea.value||'').trim();
-    if (!q) return;
-    addMsg('user', q);
-    textarea.value = '';
-
-    Array.from(container.querySelectorAll('.msg.ai')).forEach(m=>{
-      if (m.textContent && m.textContent.includes('We answer with mercy')) m.textContent = '';
-    });
-
-    callChat(q).catch(err=>{
-      console.error(err);
-      addMsg('ai','Service error. Try again.');
-    });
-  });
-
-  textarea.addEventListener('keydown', (e)=>{
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); form.requestSubmit(); }
-  });
-
-  log('safeai.js loaded');
+  // Wait for full parse so elements exist
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', wireSafeAI, { once: true });
+  } else {
+    wireSafeAI();
+  }
 })();
-
-  // Enter to send
-  textarea.addEventListener('keydown', (e)=>{
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); form.requestSubmit(); }
-  });
-})();
-</script>
