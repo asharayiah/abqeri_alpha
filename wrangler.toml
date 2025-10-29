@@ -1,0 +1,45 @@
+name = "abqeri-alpha"
+main = "src/index.js"
+compatibility_date = "2024-11-20"
+compatibility_flags = ["nodejs_compat"]   # <- add this if missing
+
+[assets]
+directory = "public"
+binding = "ASSETS"
+html_handling = "auto-trailing-slash"
+
+[[kv_namespaces]]
+binding = "RATELIMIT"
+id = "bfa1d382243d4b43b28fc496bfc65a33"
+
+[[d1_databases]]
+binding = "abqeri_alpha"
+database_name = "abqeri_alpha"
+database_id = "e091783f-0250-4c8f-874f-0f227203eaa3"
+
+[ai] 
+binding = "AI"
+
+[dev]
+
+[vars]
+ALLOWED_ORIGINS = "https://abqeri.com,https://www.abqeri.com,https://abqeri.pages.dev"
+MODEL_ID = "@cf/meta/llama-3.1-8b-instruct"
+PLAN_LINK_RAHMA_FREE         = "https://buy.paddle.com/checkout/<rahma-free>"
+PLAN_LINK_RAHMA_LITE         = "https://buy.paddle.com/checkout/<rahma-lite>"
+PLAN_LINK_RAHMA_PLUS         = "https://buy.paddle.com/checkout/<rahma-plus>"
+PLAN_LINK_RAHMA_LAB          = "https://buy.paddle.com/checkout/<rahma-lab>"
+PLAN_LINK_RAHMA_INSTITUTION  = "https://buy.paddle.com/checkout/<rahma-institution>"
+PLAN_LINK_RAHMA_PATRON       = "https://buy.paddle.com/checkout/<rahma-patron>"
+OP_COST_RATIO = "0.30"
+STAFF_SALARY_CAP = "4000 USD"
+DONATION_MINIMUM = "10"
+BASE_CURRENCY = "USD"
+FX_SOURCE_URL = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
+TURNSTILE_SITE_KEY = "1x00000000000000000000AA"
+ADMIN_USER = "admin"
+ALLOW_FAKE_TURNSTILE = "0"
+
+[triggers]
+crons = ["0 0 * * *"]
+

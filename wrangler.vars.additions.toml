@@ -1,0 +1,14 @@
+[vars]
+LEDGER_URL = "https://abqeri-ledger.your.workers.dev"
+PADDLE_WEBHOOK_SECRET = "replace-with-paddle-webhook-secret"
+PLAN_MAP = '''
+{
+  "rahma-free":  { "kind":"subscription", "ccy":"USD", "price":0 },
+  "rahma-lite":  { "kind":"subscription", "ccy":"USD", "price":29 },
+  "rahma-plus":  { "kind":"subscription", "ccy":"USD", "price":79 },
+  "rahma-lab":   { "kind":"subscription", "ccy":"USD", "price":199 },
+  "rahma-institution": { "kind":"subscription", "ccy":"USD", "price":999 },
+  "rahma-patron": { "kind":"donation", "ccy":"USD", "price":50 }
+}
+'''
+CF_ANALYTICS_TOKEN = "YOUR_CF_ANALYTICS_TOKEN"
