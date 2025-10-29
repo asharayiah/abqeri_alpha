@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>订阅 — Abqeri</title>
+<link rel="icon" href="/assets/favicon.png">
+<link rel="stylesheet" href="/assets/app.css">
+</head>
+<body>
+<div class="header">
+  <a class="brand" href="/"><img src="/assets/logo.png" alt=""><span>Abqeri</span></a>
+  <div class="nav">
+    <a id="nav-about" href="/about/zh/">关于</a>
+    <a id="nav-pricing" href="/pricing/zh/">定价</a>
+    <a id="nav-ledger" href="/ledger.html">公开账本</a>
+    <a id="nav-login" href="/auth/login.html">登录</a>
+    <a id="nav-register" class="btn" href="/auth/register.html">注册</a>
+    <select id="lang-switch" class="btn ghost">
+      <option value="en">EN</option>
+      <option value="ar">AR</option>
+      <option value="ru">RU</option>
+      <option value="zh" selected>ZH</option>
+    </select>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="card">
+    <h1 style="color:var(--abq-gold);margin:.2rem 0">订阅并享 14 天试用</h1>
+    <p class="small" style="opacity:.95">在下方选择方案。若 Paddle 显示“出错”，是因为仍在审核中 —— 可先使用免费账户，稍后再升级。</p>
+
+    <div id="rahma-lite" class="card">
+      <h3 style="color:var(--abq-gold);margin-top:0">Rahma — Lite</h3>
+      <a class="btn" target="_blank" href="https://buy.paddle.com/checkout/<rahma-lite>">前往结账</a>
+    </div>
+
+    <div id="rahma-plus" class="card">
+      <h3 style="color:var(--abq-gold);margin-top:0">Rahma — Plus</h3>
+      <a class="btn" target="_blank" href="https://buy.paddle.com/checkout/<rahma-plus>">前往结账</a>
+    </div>
+
+    <div id="rahma-lab" class="card">
+      <h3 style="color:var(--abq-gold);margin-top:0">Rahma — Lab / Institution</h3>
+      <a class="btn" target="_blank" href="https://buy.paddle.com/checkout/<rahma-lab>">前往结账</a>
+    </div>
+
+    <div id="rahma-patron" class="card">
+      <h3 style="color:var(--abq-gold);margin-top:0">Rahma — Patron</h3>
+      <a class="btn" target="_blank" href="https://buy.paddle.com/checkout/<rahma-patron>">前往结账</a>
+    </div>
+  </section>
+</div>
+
+<footer>© <span id="y"></span> Abqeri — 以仁慈为人类服务的科技</footer>
+<script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+<script src="/assets/app.js" defer></script>
+</body>
+</html>

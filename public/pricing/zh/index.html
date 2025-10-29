@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>定价与试用 — Abqeri</title>
+<link rel="icon" href="/assets/favicon.png">
+<link rel="stylesheet" href="/assets/app.css">
+</head>
+<body>
+<div class="header">
+  <a class="brand" href="/"><img src="/assets/logo.png" alt=""><span>Abqeri</span></a>
+  <div class="nav">
+    <a id="nav-about" href="/about/zh/">关于</a>
+    <a id="nav-pricing" href="/pricing/zh/">定价</a>
+    <a id="nav-ledger" href="/ledger.html">公开账本</a>
+    <a id="nav-login" href="/auth/login.html">登录</a>
+    <a id="nav-register" class="btn" href="/auth/register.html">注册</a>
+    <select id="lang-switch" class="btn ghost">
+      <option value="en">EN</option>
+      <option value="ar">AR</option>
+      <option value="ru">RU</option>
+      <option value="zh" selected>ZH</option>
+    </select>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="card">
+    <h1 style="color:var(--abq-gold);margin:.2rem 0">清晰定价。付费方案均含 14 天试用。</h1>
+    <p class="small" style="opacity:.95">从免费开始，随时升级。订阅后即刻开始试用。</p>
+
+    <div class="row">
+      <div class="card">
+        <h3 style="color:var(--abq-gold);margin-top:0">Rahma — Free</h3>
+        <ul class="small">
+          <li>Safe-AI（限速）含软件安全护栏</li>
+          <li>本地演示版 Music-AI</li>
+          <li>宇宙模拟器（演示）</li>
+        </ul>
+        <a class="btn" href="/auth/register.html">创建免费账户</a>
+      </div>
+
+      <div class="card">
+        <h3 style="color:var(--abq-gold);margin-top:0">Rahma — Lite（试用）</h3>
+        <ul class="small">
+          <li>更高限额的 Safe-AI</li>
+          <li>通过 Relay 获得优先队列</li>
+          <li>14 天试用</li>
+        </ul>
+        <a class="btn" href="/subscribe/zh/#rahma-lite">开始试用</a>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="card">
+        <h3 style="color:var(--abq-gold);margin-top:0">Rahma — Plus（试用）</h3>
+        <ul class="small">
+          <li>Safe-AI + Music-AI 导出</li>
+          <li>宇宙模拟器批量运行</li>
+          <li>14 天试用</li>
+        </ul>
+        <a class="btn" href="/subscribe/zh/#rahma-plus">开始试用</a>
+      </div>
+
+      <div class="card">
+        <h3 style="color:var(--abq-gold);margin-top:0">Rahma — Lab / Institution（试用）</h3>
+        <ul class="small">
+          <li>混合 QPU 试点支持</li>
+          <li>团队成员与治理</li>
+          <li>14 天试用</li>
+        </ul>
+        <a class="btn" href="/subscribe/zh/#rahma-lab">开始试用</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="color:var(--abq-gold);margin-top:0">Rahma — Patron</h3>
+      <p class="small">资助学校、实验室、诊所的使用。Patron 享有 Plus 的全部权益。</p>
+      <a class="btn" href="/subscribe/zh/#rahma-patron">成为赞助人</a>
+    </div>
+  </section>
+</div>
+
+<footer>© <span id="y"></span> Abqeri — 以仁慈为人类服务的科技</footer>
+<script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+<script src="/assets/app.js" defer></script>
+</body>
+</html>

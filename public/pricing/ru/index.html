@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Цены и пробные периоды — Abqeri</title>
+<link rel="icon" href="/assets/favicon.png">
+<link rel="stylesheet" href="/assets/app.css">
+</head>
+<body>
+<div class="header">
+  <a class="brand" href="/"><img src="/assets/logo.png" alt=""><span>Abqeri</span></a>
+  <div class="nav">
+    <a id="nav-about" href="/about/ru/">О нас</a>
+    <a id="nav-pricing" href="/pricing/ru/">Цены</a>
+    <a id="nav-ledger" href="/ledger.html">Публичная книга</a>
+    <a id="nav-login" href="/auth/login.html">Вход</a>
+    <a id="nav-register" class="btn" href="/auth/register.html">Регистрация</a>
+    <select id="lang-switch" class="btn ghost">
+      <option value="en">EN</option>
+      <option value="ar">AR</option>
+      <option value="ru" selected>RU</option>
+      <option value="zh">ZH</option>
+    </select>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="card">
+    <h1 style="color:var(--abq-gold);margin:.2rem 0">Прозрачные цены. 14-дневные пробные периоды.</h1>
+    <p class="small" style="opacity:.95">Начните бесплатно. Обновляйтесь в любой момент. Пробный период стартует при подписке.</p>
+
+    <div class="row">
+      <div class="card">
+        <h3 style="color:var(--abq-gold);margin-top:0">Rahma — Free</h3>
+        <ul class="small">
+          <li>Safe-AI (с ограничениями) с программными защитами</li>
+          <li>Локальный демо-режим Music-AI</li>
+          <li>Симулятор Вселенной (демо)</li>
+        </ul>
+        <a class="btn" href="/auth/register.html">Создать бесплатный аккаунт</a>
+      </div>
+
+      <div class="card">
+        <h3 style="color:var(--abq-gold);margin-top:0">Rahma — Lite (триал)</h3>
+        <ul class="small">
+          <li>Safe-AI с более высокими лимитами</li>
+          <li>Приоритет через Relay</li>
+          <li>14-дневный триал</li>
+        </ul>
+        <a class="btn" href="/subscribe/ru/#rahma-lite">Начать триал</a>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="card">
+        <h3 style="color:var(--abq-gold);margin-top:0">Rahma — Plus (триал)</h3>
+        <ul class="small">
+          <li>Safe-AI + экспорт из Music-AI</li>
+          <li>Пакетные запуски симулятора Вселенной</li>
+          <li>14-дневный триал</li>
+        </ul>
+        <a class="btn" href="/subscribe/ru/#rahma-plus">Начать триал</a>
+      </div>
+
+      <div class="card">
+        <h3 style="color:var(--abq-gold);margin-top:0">Rahma — Lab / Institution (триал)</h3>
+        <ul class="small">
+          <li>Пилот гибридного QPU</li>
+          <li>Командные места и управление</li>
+          <li>14-дневный триал</li>
+        </ul>
+        <a class="btn" href="/subscribe/ru/#rahma-lab">Начать триал</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="color:var(--abq-gold);margin-top:0">Rahma — Patron</h3>
+      <p class="small">Поддержите доступ для школ, лабораторий и клиник. Патроны получают всё из Plus.</p>
+      <a class="btn" href="/subscribe/ru/#rahma-patron">Стать патроном</a>
+    </div>
+  </section>
+</div>
+
+<footer>© <span id="y"></span> Abqeri — Технологии с милосердием для человечества</footer>
+<script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+<script src="/assets/app.js" defer></script>
+</body>
+</html>

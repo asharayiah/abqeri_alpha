@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Pricing & Trials — Abqeri</title>
+<link rel="icon" href="/assets/favicon.png">
+<link rel="stylesheet" href="/assets/app.css">
+</head>
+<body>
+<div class="header">
+  <a class="brand" href="/"><img src="/assets/logo.png" alt=""><span>Abqeri</span></a>
+  <div class="nav">
+    <a id="nav-about" href="/about/en/">About</a>
+    <a id="nav-pricing" href="/pricing/en/">Pricing</a>
+    <a id="nav-ledger" href="/ledger.html">Ledger</a>
+    <a id="nav-login" href="/auth/login.html">Login</a>
+    <a id="nav-register" class="btn" href="/auth/register.html">Register</a>
+    <select id="lang-switch" class="btn ghost">
+      <option value="en" selected>EN</option>
+      <option value="ar">AR</option>
+      <option value="ru">RU</option>
+      <option value="zh">ZH</option>
+    </select>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="card">
+    <h1 style="color:var(--abq-gold);margin:.2rem 0">Clear pricing. 14-day trials on all paid plans.</h1>
+    <p class="small" style="opacity:.95">Start free. Upgrade anytime. Trials begin the moment you subscribe.</p>
+
+    <div class="row">
+      <div class="card">
+        <h3 style="color:var(--abq-gold);margin-top:0">Rahma Free</h3>
+        <ul class="small">
+          <li>Safe-AI (rate-limited) with software safeguards</li>
+          <li>Music-AI local demo</li>
+          <li>Universe Simulator demo</li>
+        </ul>
+        <a class="btn" href="/auth/register.html">Create free account</a>
+      </div>
+
+      <div class="card">
+        <h3 style="color:var(--abq-gold);margin-top:0">Rahma Lite (Trial)</h3>
+        <ul class="small">
+          <li>Safe-AI with faster limits</li>
+          <li>Priority queue via Relay</li>
+          <li>14-day trial</li>
+        </ul>
+        <a class="btn" href="/subscribe/en/#rahma-lite">Start trial</a>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="card">
+        <h3 style="color:var(--abq-gold);margin-top:0">Rahma Plus (Trial)</h3>
+        <ul class="small">
+          <li>Safe-AI + Music-AI export</li>
+          <li>Universe batch runs</li>
+          <li>14-day trial</li>
+        </ul>
+        <a class="btn" href="/subscribe/en/#rahma-plus">Start trial</a>
+      </div>
+
+      <div class="card">
+        <h3 style="color:var(--abq-gold);margin-top:0">Rahma Lab / Institution (Trial)</h3>
+        <ul class="small">
+          <li>Hybrid-QPU pilot support</li>
+          <li>Team seats & governance</li>
+          <li>14-day trial</li>
+        </ul>
+        <a class="btn" href="/subscribe/en/#rahma-lab">Start trial</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="color:var(--abq-gold);margin-top:0">Rahma Patron</h3>
+      <p class="small">Support access for others (schools, labs, clinics). Patron seats get everything in Plus.</p>
+      <a class="btn" href="/subscribe/en/#rahma-patron">Become a Patron</a>
+    </div>
+  </section>
+</div>
+
+<footer>© <span id="y"></span> Abqeri — Technology with Mercy for Humanity</footer>
+<script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+<script src="/assets/app.js" defer></script>
+</body>
+</html>

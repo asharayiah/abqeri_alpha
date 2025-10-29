@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Subscribe — Abqeri</title>
+<link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="/assets/app.css"></head>
+<body>
+<div class="header">
+  <a class="brand" href="/"><img src="/assets/logo.png" alt=""><span>Abqeri</span></a>
+  <div class="nav">
+    <a id="nav-about" href="/about/en/">About</a>
+    <a id="nav-pricing" href="/pricing/en/">Pricing</a>
+    <a id="nav-ledger" href="/ledger.html">Ledger</a>
+    <a id="nav-login" href="/auth/login.html">Login</a>
+    <a id="nav-register" class="btn" href="/auth/register.html">Register</a>
+    <a id="nav-subscribe" class="btn ghost" href="/subscribe/en/">Subscribe</a>
+    <select id="lang-switch" class="btn ghost">
+      <option value="en" selected>EN</option><option value="ar">AR</option><option value="ru">RU</option><option value="zh">ZH</option>
+    </select>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="card">
+    <h1 style="color:var(--abq-gold);margin:.2rem 0">Start a 14-day trial</h1>
+    <p class="small" style="opacity:.95">If Paddle shows “something went wrong”, it’s just verification in progress. You can use Free now and upgrade later.</p>
+
+    <div id="rahma-lite" class="card">
+      <h3 style="color:var(--abq-gold);margin-top:0">Rahma — Lite</h3>
+      <a class="btn" target="_blank" rel="noopener" href="https://buy.paddle.com/checkout/<rahma-lite>">Proceed to checkout</a>
+    </div>
+
+    <div id="rahma-plus" class="card">
+      <h3 style="color:var(--abq-gold);margin-top:0">Rahma — Plus</h3>
+      <a class="btn" target="_blank" rel="noopener" href="https://buy.paddle.com/checkout/<rahma-plus>">Proceed to checkout</a>
+    </div>
+
+    <div id="rahma-lab" class="card">
+      <h3 style="color:var(--abq-gold);margin-top:0">Rahma — Lab / Institution</h3>
+      <a class="btn" target="_blank" rel="noopener" href="https://buy.paddle.com/checkout/<rahma-lab>">Proceed to checkout</a>
+    </div>
+
+    <div id="rahma-patron" class="card">
+      <h3 style="color:var(--abq-gold);margin-top:0">Rahma — Patron</h3>
+      <a class="btn" target="_blank" rel="noopener" href="https://buy.paddle.com/checkout/<rahma-patron>">Proceed to checkout</a>
+    </div>
+  </section>
+</div>
+
+<footer>© <span id="y"></span> Abqeri — Technology with Mercy for Humanity</footer>
+<script>document.getElementById('y').textContent=new Date().getFullYear();</script>
+<script src="/assets/app.js" defer></script>
+</body>
+</html>

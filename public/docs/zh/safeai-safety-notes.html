@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Abqeri • Safe-AI — Safety Notes</title>
+<link rel="icon" href="/assets/favicon.png">
+<link rel="stylesheet" href="/assets/app.css">
+<style>
+/* Golden theme */
+body { background:#000; color:#e7e3d6; }
+a { color:#d4af37; text-decoration:underline; }
+h1,h2,h3 { color:#d4af37; }
+.hero,.card { border:1px solid #3a2f12; border-radius:14px; background:#0a0a0a; }
+.hero { padding:16px; }
+.card { padding:16px; margin:14px 0; }
+.kv { display:grid; grid-template-columns: 220px 1fr; gap:8px 16px; }
+.badge { display:inline-block; padding:2px 8px; border:1px solid #3a2f12; border-radius:12px; color:#d4af37; background:#0b0b0b; }
+.code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; background:#0c0c0c; border:1px solid #3a2f12; border-radius:8px; padding:10px; }
+.small { font-size:12px; opacity:.9 }
+footer { opacity:.8; margin-top:24px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <h1>Safe-AI — Safety Notes (Technical)</h1>
+    <p class="small">
+      <a href="/">← Back to Home</a> &nbsp;·&nbsp;
+      <a href="/workbench?lang=en#tab=safe">Open Safe-AI</a> &nbsp;·&nbsp;
+      <a href="/docs/safeai-policy-brief.html">Policy brief</a>
+    </p>
+    <p>This note explains how guardrails, streaming, and provenance work in Abqeri’s Safe-AI. Use it as an engineer’s/service-owner reference.</p>
+  </header>
+
+  <section class="card">
+    <h2>Guardrail triggers & explanations</h2>
+    <div class="kv">
+      <div><b>Detection</b></div>
+      <div>We scan the user request and context for categories (e.g., <i>violence</i>, <i>exploitation</i>, <i>illicit behavior</i>). A trigger sets <code>meta.action="restrict"</code> and includes the guardrail ID(s).</div>
+
+      <div><b>User-visible reason</b></div>
+      <div>Instead of generic “blocked”, the chat renders a clear explanation such as <i>“Violent wrongdoing detected. I won’t help with harm.”</i> and suggests safe alternatives.</div>
+
+      <div><b>Streaming with meta</b></div>
+      <div>Responses arrive as **NDJSON** records. The first object includes <code>meta</code> (model, path, guardrails). Tokens follow only if <code>restrict</code> is not set.</div>
+    </div>
+    <pre class="code">{"meta":{"guardrails":[{"id":"violence","message":"..."}],"action":"restrict","provenance":{"model":"@cf/meta/llama-3.1-8b-instruct","hybrid":false}}}
+{"token":"I'm here to keep you safe. ... lawful alternatives."}</pre>
+  </section>
+
+  <section class="card">
+    <h2>Refusal patterns (what users see)</h2>
+    <ul>
+      <li>**Clear refusal**: “I won’t help with harm.”</li>
+      <li>**Offer safe direction**: “I can share de-escalation, safety, or lawful alternatives.”</li>
+      <li>**Provenance visible**: Compute path and model appear above the chat.</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>Hybrid provenance</h2>
+    <div class="kv">
+      <div><b>Software fallback</b></div>
+      <div>Runs entirely on Workers AI. Guardrail logic and explanations are the same across modes.</div>
+
+      <div><b>Hybrid (hardware-backed)</b></div>
+      <div>When BLE/Serial detects the FPGA, the UI flips to **Hybrid (Hardware-backed)**. We tag responses with <code>provenance.hybrid=true</code> and expose model/route to the user.</div>
+
+      <div><b>BLE handshake (preview)</b></div>
+      <div>A short Web Bluetooth pairing establishes a session; a durable relay coordinates clients and fan-out events.</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Internationalization & RTL</h2>
+    <p>All labels and messages can localize to **EN / AR / RU / ZH**. The root document direction switches to **RTL** for Arabic automatically.</p>
+  </section>
+
+  <section class="card">
+    <h2>Operator checklist</h2>
+    <ul>
+      <li>Confirm **/api/ai/status** returns model ID and path.</li>
+      <li>Verify **NDJSON** stream: first line contains <code>meta</code>, next lines contain <code>token</code> (unless restricted).</li>
+      <li>Test a safe refusal: send an obviously disallowed prompt and confirm the reasoned message appears.</li>
+    </ul>
+    <p class="small">For a policy overview, read the <a href="/docs/safeai-policy-brief.html">Policy brief</a>.</p>
+  </section>
+
+  <footer>© Abqeri — Technology with Mercy for Humanity</footer>
+</div>
+</body>
+</html>

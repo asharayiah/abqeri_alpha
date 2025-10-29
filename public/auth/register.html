@@ -1,0 +1,51 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title data-i18n="auth.register_title">Register — Abqeri</title>
+<link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="/assets/app.css">
+</head><body>
+<div class="header">
+  <a class="brand" href="/"><img src="/assets/logo.png" alt="" onerror="this.style.display='none'"><span>Abqeri</span></a>
+  <div class="nav">
+    <a id="nav-about" href="/about/en/">About</a>
+    <a id="nav-pricing" href="/pricing.html">Pricing</a>
+    <a id="nav-ledger" href="/ledger.html">Ledger</a>
+    <a id="nav-login" href="/auth/login.html">Login</a>
+    <a id="nav-register" href="/auth/register.html" class="btn">Register</a>
+    <a id="nav-subscribe" href="/subscribe.html" class="btn">Subscribe</a>
+<select id="lang-switch" class="btn ghost">
+  <option value="en">EN</option>
+  <option value="ar">AR</option>
+  <option value="ru">RU</option>
+  <option value="zh">ZH</option>
+</select>
+  </div>
+</div>
+<script src="/assets/app.js?v=20251025" defer></script>
+
+<div class="wrap" style="max-width:520px">
+  <div class="card">
+    <h2 data-i18n="auth.register_title">Register</h2>
+    <div class="kv">
+      <div data-i18n="auth.email">Email</div><div><input id="email" type="email" data-i18n-placeholder="auth.email" placeholder="Email"></div>
+      <div data-i18n="auth.password">Password</div><div><input id="pass" type="password" data-i18n-placeholder="auth.password" placeholder="Password"></div>
+    </div>
+    <div style="margin-top:12px"><button class="btn" id="reg" data-i18n-value="auth.register_btn">Register</button></div>
+    <div id="out" class="small" style="margin-top:8px"></div>
+  </div>
+  <p class="small"><span data-i18n="auth.have_account">Already have an account?</span> <a href="/auth/login.html" data-i18n="auth.go_login">Log in</a></p>
+</div>
+<script>
+document.getElementById('reg').addEventListener('click', async ()=>{
+  const out=document.getElementById('out');
+  const email=document.getElementById('email').value.trim();
+  const pass=document.getElementById('pass').value;
+  if(!email||!pass){ out.textContent='Enter email and password.'; return; }
+  out.textContent='…';
+  try{
+    const r=await fetch('/api/auth/register',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email,pass})});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    out.textContent='Registered. Redirecting…'; setTimeout(()=>location.href='/account.html',1000);
+  }catch(e){ out.textContent='Failed to register. Try again.'; console.error(e); }
+});
+</script>
+</body></html>

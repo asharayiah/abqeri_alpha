@@ -1,0 +1,50 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title data-i18n="account.title">Account — Abqeri</title>
+<link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="/assets/app.css">
+</head><body>
+<div class="header">
+  <a class="brand" href="/"><img src="/assets/logo.png" alt="" onerror="this.style.display='none'"><span>Abqeri</span></a>
+  <div class="nav">
+    <a id="nav-about" href="/about/en/">About</a>
+    <a id="nav-pricing" href="/pricing.html">Pricing</a>
+    <a id="nav-ledger" href="/ledger.html">Ledger</a>
+    <a id="nav-login" href="/auth/login.html">Login</a>
+    <a id="nav-register" href="/auth/register.html" class="btn">Register</a>
+    <a id="nav-subscribe" href="/subscribe.html" class="btn">Subscribe</a>
+<select id="lang-switch" class="btn ghost">
+  <option value="en">EN</option>
+  <option value="ar">AR</option>
+  <option value="ru">RU</option>
+  <option value="zh">ZH</option>
+</select>
+  </div>
+</div>
+<script src="/assets/app.js?v=20251025" defer></script>
+
+<div class="wrap" style="max-width:720px">
+  <div class="card">
+    <h2 data-i18n="account.title">Your account</h2>
+    <div id="who" class="small" data-i18n="account.not_signed">Not signed in.</div>
+    <div id="ent" class="small" style="margin-top:8px"></div>
+    <div style="margin-top:12px"><a class="btn" href="/subscribe.html" data-i18n="account.manage">Manage subscription</a>
+      <a class="btn ghost" href="#" id="logout" data-i18n="account.logout">Log out</a></div>
+  </div>
+</div>
+<script>
+async function loadSession(){
+  const who=document.getElementById('who'), ent=document.getElementById('ent');
+  try{
+    const r=await fetch('/api/session',{credentials:'include'}); if(!r.ok) throw 0;
+    const s=await r.json();
+    who.textContent = `Signed in as ${s.email}. Plan: ${s.plan||'rahma_free'}`;
+    if(s.trialEndsAt){ const d=Math.max(0, Math.ceil((new Date(s.trialEndsAt)-Date.now())/86400000));
+      ent.textContent = `Trial ends in ${d} day(s).`; } else ent.textContent='';
+  }catch{}
+}
+loadSession();
+document.getElementById('logout').addEventListener('click', async (e)=>{
+  e.preventDefault(); try{ await fetch('/api/auth/logout',{method:'POST'}); }catch{} location.href='/';
+});
+</script>
+</body></html>

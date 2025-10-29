@@ -1,0 +1,13 @@
+
+.abq-provenance{padding:12px;border:1px solid #222;border-radius:12px;background:#0f0f0f;margin:12px 0;color:#f6f6f6}
+.abq-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.abq-small{color:#9aa0a6;font-size:12px}
+.abq-status{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.abq-ghost{background:transparent;color:#f6f6f6;border:1px solid #333;padding:6px 10px;border-radius:10px;cursor:pointer}
+.abq-ghost:hover{border-color:#555}
+.abq-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.abq-dot-soft{background:#6c7a89}
+.abq-dot-ok{background:#2ca34a}
+.msg{padding:10px 12px;border-radius:12px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
+.msg.user{background:#13222a;border:1px solid #204a63;align-self:flex-end}
+.msg.ai{background:#171717;border:1px solid #2a2a2a}

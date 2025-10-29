@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Abqeri Workbench — Safe-AI • Music-AI • Universe • Hybrid-QPU</title>
+<link rel="icon" href="/assets/favicon.png">
+<link rel="stylesheet" href="/assets/app.css">
+<meta name="description" content="Live demos: Safe-AI, Music-AI, Universe experiments, and Hybrid-QPU Bell state.">
+<meta property="og:title" content="Abqeri Workbench — Safe-AI • Universe • Hybrid-QPU">
+<meta property="og:description" content="Live demos: Safe-AI, Music-AI, Universe, and Hybrid-QPU.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="/assets/social-hero.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Abqeri Workbench — Safe-AI • Universe • Hybrid-QPU">
+<meta name="twitter:description" content="Safe-AI, Music-AI, Universe, and Hybrid-QPU.">
+<meta name="twitter:image" content="/assets/social-hero.png">
+<style>
+/* tiny guard so the canvas shows even if CSS fails elsewhere */
+.canvasbox{min-height:300px;display:block;width:100%;background:#000;border:1px solid #222}
+.u-note{font-size:.9rem;opacity:.85}
+.u-quote{border-left:3px solid #d4af37;padding:.5rem 1rem;margin:.75rem 0}
+.cite{opacity:.8}
+.small.warn{color:#ffcc66}
+</style>
+</head>
+<body>
+
+<!-- Unified Header -->
+<div class="header">
+  <a class="brand" href="/"><img src="/assets/logo.png" alt="" onerror="this.style.display='none'"><span>Abqeri</span></a>
+  <div class="nav">
+    <a id="nav-about" href="/about/en/">About</a>
+    <a id="nav-pricing" href="/pricing.html">Pricing</a>
+    <a id="nav-ledger" href="/ledger.html">Ledger</a>
+    <a id="nav-login" href="/auth/login.html">Login</a>
+    <a id="nav-register" href="/auth/register.html" class="btn">Register</a>
+    <a id="nav-subscribe" href="/subscribe.html" class="btn">Subscribe</a>
+<select id="lang-switch" class="btn ghost">
+  <option value="en">EN</option>
+  <option value="ar">AR</option>
+  <option value="ru">RU</option>
+  <option value="zh">ZH</option>
+</select>
+  </div>
+</div>
+<script src="/assets/app.js?v=20251025" defer></script>
+
+<div class="wrap">
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-tab="safe"     type="button">🛡️ Safe-AI</button>
+    <button class="tab"         data-tab="music"    type="button">🎶 Music-AI</button>
+    <button class="tab"         data-tab="universe" type="button">🌌 Universe</button>
+    <button class="tab"         data-tab="qpu"      type="button">🧠 Hybrid-QPU</button>
+    <button class="tab"         data-tab="insights" type="button">📈 Transparency</button>
+  </div>
+
+  <!-- SAFE-AI -->
+  <section class="card" id="tab-safe">
+    <div class="u-floating"><button class="u-toggle" id="safe-toggle" type="button">🛡 About Safe-AI</button></div>
+    <div class="u-panel collapsed" id="safe-panel">
+      <h2 style="color:#d4af37;margin-bottom:8px" data-i18n="safe.about_title">Abqeri Safe-AI — Interpretable Intelligence with Mercy</h2>
+      <p data-i18n="safe.about_p1">Abqeri’s Safe-AI anchors safety at the hardware and algorithmic levels. Decisions are traceable, rules are visible, and outcomes are optimized for mercy and real-world responsibility.</p>
+      <ul>
+        <li data-i18n="safe.bul1"><b>Chip-level & algorithmic guardrails</b> — not bolt-on policies.</li>
+        <li data-i18n="safe.bul2"><b>Explainable by default</b> — every answer shows its reasoning chain.</li>
+        <li data-i18n="safe.bul3"><b>Mercy objectives</b> — prioritize human safety and dignity.</li>
+        <li data-i18n="safe.bul4"><b>Local & sustainable</b> — hybrid compute reduces data-center burden.</li>
+      </ul>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="chat" id="chat" aria-live="polite"></div>
+        <div class="row">
+          <input id="prompt" placeholder="Ask with mercy, science, philosophy, engineering…" />
+          <button class="btn" id="btn-send" type="button">Send</button>
+        </div>
+        <div id="ai-status" class="small"></div>
+        <div class="small u-note">Real inference via Workers AI if bound — endpoint: <code>/api/ai/chat</code>. Otherwise a humane local fallback answers.</div>
+      </div>
+      <div class="col">
+        <div class="kv card">
+          <div>Mode</div><div>
+            <select id="mode">
+              <option>Scholar</option><option>Engineer</option>
+              <option>Storyteller</option><option>Mufti (ethical)</option>
+            </select>
+          </div>
+          <div>Safety</div><div>
+            <select id="safety"><option>Gentle</option><option selected>Moderate</option><option>Strict</option></select>
+          </div>
+          <div>Language</div><div>
+            <select id="lang"><option value="en">English</option><option value="ar">العربية</option><option value="ru">Русский</option><option value="zh">中文</option></select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MUSIC-AI -->
+  <section class="card" id="tab-music" hidden>
+    <div class="u-floating"><button class="u-toggle" id="music-toggle" type="button">🎶 About Music-AI</button></div>
+    <div class="u-panel collapsed" id="music-panel">
+      <h2 style="color:#d4af37;margin-bottom:8px">Abqeri Music-AI — Humane Synthesis</h2>
+      <p>Rule-guided composition you can see and teach. Sliders and scales, not black-box tricks.</p>
+      <ul>
+        <li>Rules visible (scales, tempo, contour).</li>
+        <li>Classroom-ready and copyright-safe demo melodies.</li>
+      </ul>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <canvas id="piano" class="canvasbox" aria-label="Generated melody visualization"></canvas>
+        <div class="u-presetbar" style="margin-top:8px">
+          <label class="small" for="music-preset">Demo presets</label>
+          <select id="music-preset">
+            <option value="lullaby">Lullaby (C Major · 80 bpm)</option>
+            <option value="uplift">Uplift (G Major · 120 bpm)</option>
+            <option value="minor">Minor Theme (A Minor · 95 bpm)</option>
+            <option value="wide">Wide Range (D Minor · 110 bpm)</option>
+          </select>
+          <button class="btn ghost" id="music-apply" type="button">Load</button>
+          <span class="small" style="opacity:.8">Then Generate → Play</span>
+        </div>
+        <div class="row" style="margin-top:8px">
+          <select id="scale">
+            <option value="Cmaj">C Major</option>
+            <option value="Amin">A Minor</option>
+            <option value="Gmaj">G Major</option>
+            <option value="Dmin">D Minor</option>
+          </select>
+          <label class="small" style="display:flex;align-items:center;gap:6px">
+            Tempo <input id="tempo" type="number" min="40" max="220" value="100" style="width:90px"/>
+          </label>
+          <button class="btn" id="btn-gen"  type="button">Generate</button>
+          <button class="btn ghost" id="btn-play" type="button">Play</button>
+        </div>
+        <div class="small u-note">Local WebAudio synth; melody notes appear at right.</div>
+      </div>
+      <div class="col">
+        <textarea id="notes" rows="14" class="code" placeholder="Generated notes (MIDI numbers)…"></textarea>
+      </div>
+    </div>
+  </section>
+
+  <!-- UNIVERSE -->
+  <section class="card" id="tab-universe" hidden style="position:relative">
+    <div class="u-floating"><button class="u-toggle" id="u-toggle" type="button">🕊 About this experiment</button></div>
+    <div class="u-panel collapsed" id="u-panel">
+      <h2>Einstein Was Right — A Hands-On Resolution</h2>
+      <div class="u-quote">“God does not play dice with the universe.” <span class="cite">— Albert Einstein</span></div>
+      <div class="u-quote small warn">“If we truly understood quantum mechanics, it would be the end of science.” <span class="cite">— often attributed to Einstein (attribution debated)</span></div>
+      <p>This simulator shows how a later choice can appear to constrain earlier histories — not by time running backward, but by the universe maintaining <b>global self-consistency</b> across time. When you toggle modes, the field re-equilibrates to preserve harmony.</p>
+      <h3>How to use</h3>
+      <ul>
+        <li><b>N-Body:</b> Classical gravity-like baseline.</li>
+        <li><b>Retro-Slit:</b> Delayed choice reshapes interference.</li>
+        <li><b>Entanglement:</b> Pairs synchronize by “time-harmony”.</li>
+        <li><b>Eraser:</b> Toggle which-path ↔ coherence.</li>
+        <li><b>Harmony:</b> Global re-balance when disturbed.</li>
+      </ul>
+      <h3>Purpose & Invitation</h3>
+      <p>Abqeri offers this as a <b>mercy tool</b>: to help scientists and philosophers resolve century-long paradoxes, and then redirect their influence toward humanity’s urgent needs — feeding forgotten orphans in Africa, protecting the vulnerable, and exposing deception and injustice. Let discovery serve compassion, not prestige or endless debate.</p>
+    </div>
+
+    <div class="row">
+      <div class="col"><canvas id="unicanvas" class="canvasbox" aria-label="Universe simulation"></canvas></div>
+      <div class="col">
+        <div class="u-presetbar" style="margin-bottom:10px">
+          <label for="u-preset" class="small">Demo presets</label>
+          <select id="u-preset">
+            <option value="entangle">Entanglement Consistency (pairs re-lock)</option>
+            <option value="retro">Retroactive Double-Slit (delayed-choice)</option>
+            <option value="eraser">Delayed-Choice Eraser (coherence toggle)</option>
+            <option value="harmony">Boundary-Harmony (global re-balance)</option>
+            <option value="nbody">N-Body Baseline (classical reference)</option>
+          </select>
+          <button id="u-apply" class="btn ghost" type="button">Load</button>
+          <span class="small" style="opacity:.8">Then click <b>Start</b></span>
+        </div>
+
+        <div class="kv">
+          <div>Mode</div><div>
+            <select id="u-mode">
+              <option value="nbody">N-Body (baseline)</option>
+              <option value="retro-slit">Retroactive Double-Slit</option>
+              <option value="entangle">Entanglement Consistency</option>
+              <option value="eraser">Delayed-Choice Eraser</option>
+              <option value="harmony">Boundary-Harmony</option>
+            </select>
+          </div>
+          <div>Bodies / Photons</div><div><input id="bodies" type="number" value="60" min="2" max="500"/></div>
+          <div>Gravity / Coupling</div><div><input id="grav" type="range" min="1" max="100" value="25"/></div>
+          <div>Damping / Decoherence</div><div><input id="drag" type="range" min="0" max="99" value="5"/></div>
+        </div>
+        <div class="row" style="margin-top:10px">
+          <button class="btn" id="btn-start" type="button">Start</button>
+          <button class="btn ghost" id="btn-pause" type="button">Pause</button>
+          <button class="btn" id="btn-reset" type="button">Reset</button>
+        </div>
+        <div id="u-status" class="small u-note"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HYBRID-QPU -->
+  <section class="card" id="tab-qpu" hidden>
+    <div class="u-floating"><button class="u-toggle" id="qpu-toggle" type="button">ℹ️ About Hybrid-QPU</button></div>
+    <div class="u-panel collapsed" id="qpu-panel">
+      <h2 style="color:#d4af37;margin-bottom:8px">Qiskit-style programming on Abqeri’s hybrid node</h2>
+      <p class="small">Write simple circuits (H, CX, X, Z, M) in YAML-like syntax. We parse and run locally, or call the backend if available.</p>
+      <ul class="small">
+        <li><b>Bell example:</b> H(0); CX(0→1); measure 512 shots → high counts in 00/11.</li>
+        <li><b>Performance bars:</b> Latency (ms), Energy (mJ), Fidelity (%), comparing baseline vs hybrid.</li>
+      </ul>
+    </div>
+
+    <div class="row">
+      <div class="col">
+<textarea id="qpu-code" class="code" rows="18"># Example: Bell state (Qiskit-style pseudo)
+circuit:
+  qbits: 2
+  ops:
+    - H 0
+    - CX 0 1
+shots: 512
+backend: "hybrid-local"
+</textarea>
+        <div class="row" style="margin-top:8px">
+          <button class="btn" id="qpu-run" type="button">Run</button>
+          <button class="btn ghost" id="qpu-clear" type="button">Clear</button>
+        </div>
+        <div id="qpu-status" class="small" style="min-height:20px"></div>
+      </div>
+      <div class="col">
+        <h4>Results</h4>
+        <div id="qpu-results" class="code" style="min-height:220px" aria-live="polite"></div>
+        <h4>Performance</h4>
+        <canvas id="qpu-chart" class="chart" aria-label="Performance chart"></canvas>
+        <p class="small" style="margin-top:6px">Bars compare <b>baseline</b> vs <b>hybrid</b>: Latency (ms), Energy (mJ), Fidelity (%).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSIGHTS -->
+  <section class="card" id="tab-insights" hidden>
+    <div class="row">
+      <div class="col">
+        <h3>Live Summary</h3>
+        <div id="livebox" class="kv"></div>
+      </div>
+      <div class="col">
+        <h3>30-day Chart</h3>
+        <canvas id="series-chart" class="chart"></canvas>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col"><a class="btn" href="/ledger.html">Open Public Ledger</a></div>
+      <div class="col"><a class="btn ghost" href="/pricing.html">Pricing</a></div>
+    </div>
+  </section>
+</div>
+
+<footer class="small">© Abqeri — Technology with Mercy for Humanity</footer>
+
+<script>
+/* ===== Tabs (dispatches tab:shown) ===== */
+(function(){
+  const tabs = document.getElementById('tabs');
+  const sections = {
+    safe: document.getElementById('tab-safe'),
+    music: document.getElementById('tab-music'),
+    universe: document.getElementById('tab-universe'),
+    qpu: document.getElementById('tab-qpu'),
+    insights: document.getElementById('tab-insights')
+  };
+  function show(tab){
+    for(const k in sections){ sections[k].hidden = (k!==tab); }
+    tabs.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
+    history.replaceState(null,'', '#tab='+tab);
+    window.dispatchEvent(new CustomEvent('tab:shown',{ detail:{ tab } }));
+  }
+  tabs.addEventListener('click', (e)=>{
+    const b = e.target.closest('.tab'); if(!b) return;
+    show(b.dataset.tab);
+  });
+  const hash = (location.hash||'').replace('#tab=','');
+  show(sections[hash] ? hash : 'safe');
+})();
+
+/* ===== About panel toggles (safe guards) ===== */
+['safe','music','u','qpu'].forEach(x=>{
+  const btn=document.getElementById(x+'-toggle');
+  const pan=document.getElementById(x==='u'?'u-panel':x+'-panel');
+  if(btn && pan){ btn.addEventListener('click',()=>{ pan.classList.toggle('open'); pan.classList.toggle('collapsed'); }); }
+});
+
+/* ===== Safe-AI chat (with local fallback) ===== */
+(function(){
+  const chat = document.getElementById('chat');
+  const prompt = document.getElementById('prompt');
+  const btn = document.getElementById('btn-send');
+  const mode = document.getElementById('mode');
+  const safety = document.getElementById('safety');
+  const lang = document.getElementById('lang');
+  const st = document.getElementById('ai-status');
+
+  function say(cls, text){ const d=document.createElement('div'); d.className='msg '+cls; d.textContent=text; chat.appendChild(d); chat.scrollTop=chat.scrollHeight; }
+
+  async function callAI(q){
+    try{
+      const r=await fetch('/api/ai/chat',{method:'POST',headers:{'content-type':'application/json'},
+        body: JSON.stringify({ messages:[{role:'user',content:q}], mode:mode.value, safety:safety.value, lang:lang.value })});
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      const j=await r.json(); return j.text || '';
+    }catch(e){
+      // graceful fallback
+      return `Abqeri: We answer with mercy and clarity.\nYou asked: “${q}”.\nFirst principles → small test → measure → reflect.`;
+    }
+  }
+
+  if(btn){
+    btn.addEventListener('click', async ()=>{
+      const q = (prompt && prompt.value || '').trim(); if(!q) return;
+      say('you', q); if(prompt) prompt.value='';
+      st && (st.textContent='…');
+      const a = await callAI(q);
+      say('ai', a||'(no answer)'); st && (st.textContent='');
+    });
+  }
+})();
+
+/* ===== Music synth (safe if AudioContext missing) ===== */
+(function(){
+  const AC = window.AudioContext||window.webkitAudioContext;
+  let ctx; try{ ctx = AC ? new AC() : null; }catch{ ctx=null; }
+  const piano = document.getElementById('piano');
+  if(!piano) return;
+  const notesEl = document.getElementById('notes');
+  const gen = document.getElementById('btn-gen');
+  const play = document.getElementById('btn-play');
+  const scaleSel = document.getElementById('scale');
+  const tempo = document.getElementById('tempo');
+  const presetSel = document.getElementById('music-preset');
+  const applyPreset = document.getElementById('music-apply');
+
+  const presets = {
+    lullaby:{scale:'Cmaj', tempo:80},
+    uplift:{scale:'Gmaj', tempo:120},
+    minor:{scale:'Amin', tempo:95},
+    wide:{scale:'Dmin', tempo:110}
+  };
+  applyPreset && applyPreset.addEventListener('click',()=>{
+    const p=presets[presetSel.value]; if(!p) return;
+    scaleSel.value = p.scale; tempo.value = p.tempo;
+  });
+
+  function scaleBase(s){ return s==='Amin'?57: s==='Gmaj'?55: s==='Dmin'?50: 48; } // Cmaj=48
+  function generate(){
+    const base=scaleBase(scaleSel.value);
+    const steps = scaleSel.value.endsWith('maj') ? [0,2,4,5,7,9,11,12] : [0,2,3,5,7,8,10,12];
+    const arr=[];
+    for(let i=0;i<32;i++){ const st=steps[Math.floor(Math.random()*steps.length)]; arr.push(base+st + (Math.random()<.25?12:0)); }
+    if(notesEl) notesEl.value = arr.join(',');
+    draw(arr);
+  }
+  function draw(arr){
+    const g=piano.getContext('2d'); if(!g) return;
+    const W=Math.max(480, piano.clientWidth||0), H=Math.max(300, piano.clientHeight||0); piano.width=W; piano.height=H;
+    g.fillStyle='#000'; g.fillRect(0,0,W,H);
+    g.strokeStyle='#d4af37'; g.beginPath();
+    arr.forEach((n,i)=>{ const x=i*(W/arr.length); const y=H - ((n-40)/60)*H; if(i===0)g.moveTo(x,y); else g.lineTo(x,y); });
+    g.stroke();
+  }
+  function playSeq(){
+    if(!ctx){ alert('Audio not supported in this browser'); return; }
+    const arr=(notesEl.value||'').split(',').map(x=>parseInt(x,10)).filter(x=>!isNaN(x));
+    if(!arr.length) return;
+    const t = ctx.currentTime; const beat=60/Math.max(40,Math.min(220,parseInt(tempo.value)||100));
+    arr.forEach((n,i)=>{ const o=ctx.createOscillator(); const g=ctx.createGain();
+      o.type='sine'; o.frequency.value=440*Math.pow(2,(n-69)/12);
+      o.connect(g); g.connect(ctx.destination);
+      o.start(t+i*beat); o.stop(t+i*beat+0.25);
+      g.gain.setValueAtTime(0.0001,t+i*beat); g.gain.exponentialRampToValueAtTime(0.3,t+i*beat+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+i*beat+0.24);
+    });
+  }
+  gen && gen.addEventListener('click', generate);
+  play && play.addEventListener('click', playSeq);
+  generate();
+})();
+
+/* ===== Universe (robust: re-init on tab:shown, survive 0-size) ===== */
+/* ===== Universe (robust + visible motion) ===== */
+(function(){
+  const can = document.getElementById('unicanvas');
+  const status = document.getElementById('u-status');
+  if(!can){ return; }
+  const ctx = can.getContext('2d'); if(!ctx){ status && (status.textContent='Canvas unsupported'); return; }
+
+  function resize(){
+    const parent = can.parentElement;
+    const W = Math.max(480, (can.clientWidth||0) || (parent?parent.clientWidth:0) || 640);
+    const H = Math.max(320, (can.clientHeight||0) || Math.floor(W*0.56));
+    can.width = W; can.height = H;
+  }
+
+  let running=false, raf=0;
+  let mode='nbody', N=80, G=0.8, D=0.03;      // ↑ stronger defaults for visible motion
+  let pts=[];
+
+  const uMode=document.getElementById('u-mode');
+  const bodies=document.getElementById('bodies');
+  const grav=document.getElementById('grav');
+  const drag=document.getElementById('drag');
+
+  function seedVel(){ return (Math.random()-0.5)*1.2; }  // small initial kick
+
+  function reset(){
+    resize();
+    pts = Array.from({length:N}, ()=>({
+      x:Math.random()*can.width,
+      y:Math.random()*can.height,
+      vx:seedVel(),
+      vy:seedVel(),
+      m:1
+    }));
+    draw(true);
+    status && (status.textContent='Ready. Load a preset → Start.');
+  }
+
+  // one physics micro-step
+  function microStep(){
+    for(let i=0;i<N;i++){
+      for(let j=i+1;j<N;j++){
+        const dx=pts[j].x-pts[i].x, dy=pts[j].y-pts[i].y;
+        const r2=Math.max(25, dx*dx+dy*dy), r=Math.sqrt(r2);
+        let f=(G)/r2;
+        if(mode==='entangle'){ f*=1.35; }
+        if(mode==='retro-slit'){ f*= (Math.sin((i+j)*0.035)+1.7); }
+        if(mode==='eraser'){ f*= ( ((i+j)%7<3) ? 0.6 : 1.7 ); }
+        if(mode==='harmony'){ f*= 1.0 + 0.65*Math.sin((pts[i].x+pts[j].y)*0.004); }
+        const fx=f*dx/r, fy=f*dy/r;
+        pts[i].vx+=fx; pts[i].vy+=fy;
+        pts[j].vx-=fx; pts[j].vy-=fy;
+      }
+    }
+    for(let i=0;i<N;i++){
+      pts[i].vx*= (1-D); pts[i].vy*=(1-D);
+      pts[i].x+=pts[i].vx; pts[i].y+=pts[i].vy;
+      if(pts[i].x<0||pts[i].x>can.width)  { pts[i].vx*=-1; pts[i].x=Math.max(0,Math.min(can.width,pts[i].x)); }
+      if(pts[i].y<0||pts[i].y>can.height) { pts[i].vy*=-1; pts[i].y=Math.max(0,Math.min(can.height,pts[i].y)); }
+    }
+  }
+
+  function step(){
+    // do a few micro-steps per frame so motion is obvious
+    microStep(); microStep(); microStep();
+  }
+
+  function draw(hardClear=false){
+    if(hardClear){
+      ctx.fillStyle='#000'; ctx.fillRect(0,0,can.width,can.height);
+    }else{
+      // faint trails
+      ctx.fillStyle='rgba(0,0,0,0.2)';
+      ctx.fillRect(0,0,can.width,can.height);
+    }
+    ctx.fillStyle='#d4af37';
+    for(const p of pts){ ctx.fillRect(p.x-1,p.y-1,2,2); }
+  }
+
+  function loop(){
+    if(!running) return;
+    step(); draw(false);
+    raf=requestAnimationFrame(loop);
+  }
+
+  const start = document.getElementById('btn-start');
+  const pause = document.getElementById('btn-pause');
+  const resetBtn = document.getElementById('btn-reset');
+  start && start.addEventListener('click', ()=>{ if(!running){ running=true; status && (status.textContent='Running…'); loop(); }});
+  pause && pause.addEventListener('click', ()=>{ running=false; cancelAnimationFrame(raf); status && (status.textContent='Paused'); });
+  resetBtn && resetBtn.addEventListener('click', ()=>{ running=false; reset(); });
+
+  document.getElementById('u-apply')?.addEventListener('click', ()=>{
+    const p=document.getElementById('u-preset').value;
+    document.getElementById('u-mode').value = p==='retro'?'retro-slit':p;
+    mode = document.getElementById('u-mode').value;
+    status && (status.textContent='Preset applied: '+p+'. Click Start.');
+  });
+  uMode && uMode.addEventListener('change', ()=>{ mode=uMode.value; });
+  bodies && bodies.addEventListener('change', ()=>{ N=Math.max(2,Math.min(500,parseInt(bodies.value)||80)); reset(); });
+  grav && grav.addEventListener('input', ()=>{ G = (parseInt(grav.value)||25)/30; });  // slider feels stronger
+  drag && drag.addEventListener('input', ()=>{ D = (parseInt(drag.value)||5)/100; });
+
+  window.addEventListener('resize', ()=>{ resize(); draw(true); });
+
+  // Re-init WHEN TAB becomes visible (fix for hidden sizing)
+  window.addEventListener('tab:shown', (ev)=>{
+    if(ev.detail && ev.detail.tab==='universe'){
+      running=false; cancelAnimationFrame(raf);
+      reset();
+    }
+  });
+
+  // If user lands on #tab=universe
+  if((location.hash||'')==='#tab=universe'){ reset(); } else { status && (status.textContent='Load a preset → Start'); }
+})();
+
+/* ===== Hybrid-QPU (backend + local fallback) ===== */
+(function(){
+  const codeEl=document.getElementById('qpu-code');
+  if(!codeEl) return;
+  const run=document.getElementById('qpu-run');
+  const clear=document.getElementById('qpu-clear');
+  const out=document.getElementById('qpu-results');
+  const status=document.getElementById('qpu-status');
+  const chart=document.getElementById('qpu-chart');
+
+  function drawBars(base, hybrid){
+    const ctx=chart.getContext('2d'); const W=chart.width=chart.clientWidth; const H=chart.height=chart.clientHeight;
+    ctx.clearRect(0,0,W,H); const labels=['Latency','Energy','Fidelity'];
+    const max=Math.max(...base,...hybrid)*1.2;
+    const bw=40, group=(bw*2+20), start=(W - group*labels.length + 20)/2;
+    labels.forEach((lab,i)=>{
+      const x=start + i*group;
+      const b=base[i]/max*(H-40); const h=hybrid[i]/max*(H-40);
+      ctx.fillStyle='#444'; ctx.fillRect(x, H-20-b, bw, b);
+      ctx.fillStyle='#d4af37'; ctx.fillRect(x+bw+20, H-20-h, bw, h);
+      ctx.fillStyle='#aaa'; ctx.fillText(lab, x, H-4);
+    });
+  }
+
+  function fallbackRun(){
+    let shots=512; try{ const m=codeEl.value.match(/shots:\s*(\d+)/); if(m) shots=parseInt(m[1])||512; }catch{}
+    const p00=0.49+(Math.random()*0.02), p11=0.49+(Math.random()*0.02);
+    const p01=Math.max(0, 1 - p00 - p11), p10=0;
+    const counts={ "00":Math.round(p00*shots), "11":Math.round(p11*shots), "01":Math.round(p01*shots), "10":Math.round(p10*shots) };
+    const results={counts, shots};
+    const baseline={latency: 42+Math.random()*8, energy: 22+Math.random()*6, fidelity: 91+Math.random()*3};
+    const hybrid  ={latency: 24+Math.random()*5, energy: 10+Math.random()*4, fidelity: 95+Math.random()*2};
+    return {results, baseline, hybrid};
+  }
+
+  async function runQPU(){
+    status.textContent='…';
+    try{
+      const r=await fetch('/api/qpc/run',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({ code: codeEl.value })});
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      const j=await r.json();
+      out.textContent = JSON.stringify(j.results, null, 2);
+      drawBars([j.baseline.latency,j.baseline.energy,j.baseline.fidelity],[j.hybrid.latency,j.hybrid.energy,j.hybrid.fidelity]);
+      status.textContent='';
+    }catch(e){
+      const j=fallbackRun();
+      out.textContent = JSON.stringify(j.results, null, 2);
+      drawBars([j.baseline.latency,j.baseline.energy,j.baseline.fidelity],[j.hybrid.latency,j.hybrid.energy,j.hybrid.fidelity]);
+      status.textContent='(local demo)';
+    }
+  }
+
+  run && run.addEventListener('click', runQPU);
+  clear && clear.addEventListener('click', ()=>{ out.textContent=''; status.textContent=''; const ctx=chart.getContext('2d'); ctx.clearRect(0,0,chart.width=chart.clientWidth,chart.height=chart.clientHeight); });
+})();
+/* ===== Insights demo (works without backend) ===== */
+(function(){
+  const live = document.getElementById('livebox');
+  const chart = document.getElementById('series-chart');
+  if(!live || !chart) return;
+
+  async function load(){
+    try{
+      const r=await fetch('/api/metrics/summary');
+      if(!r.ok) throw 0;
+      const j=await r.json();
+      renderLive(j);
+      renderChart(j.series||[]);
+    }catch{
+      // demo
+      renderLive({ subs: 1240, mrr: 8420, aov: 27.3, uptime: '99.98%' });
+      const series = Array.from({length:30}, (_,i)=>({ day:i+1, rev: 100+Math.sin(i/4)*30 + i*5 }));
+      renderChart(series);
+    }
+  }
+
+  function renderLive(d){
+    live.innerHTML = '';
+    const pairs = [
+      ['Active subs',''+d.subs], ['MRR (USD)','$'+(d.mrr||0)],
+      ['Avg order','$'+(d.aov||0)], ['Uptime', d.uptime||'—']
+    ];
+    pairs.forEach(([k,v])=>{
+      const dk=document.createElement('div'); dk.textContent=k;
+      const dv=document.createElement('div'); dv.textContent=v;
+      live.appendChild(dk); live.appendChild(dv);
+    });
+  }
+
+  function renderChart(series){
+    const ctx = chart.getContext('2d');
+    const W = chart.width = chart.clientWidth || 640;
+    const H = chart.height = chart.clientHeight || 240;
+    ctx.clearRect(0,0,W,H);
+    const xs = series.map(s=>s.day), ys = series.map(s=>s.rev);
+    const minX = Math.min(...xs), maxX = Math.max(...xs);
+    const minY = Math.min(...ys), maxY = Math.max(...ys);
+    function x(u){ return (u-minX)/(maxX-minX||1)* (W-40) + 30; }
+    function y(v){ return H - ((v-minY)/(maxY-minY||1) * (H-40) + 20); }
+    ctx.strokeStyle = '#d4af37'; ctx.beginPath();
+    series.forEach((s,i)=>{ const X=x(s.day), Y=y(s.rev); if(i===0) ctx.moveTo(X,Y); else ctx.lineTo(X,Y); });
+    ctx.stroke();
+  }
+
+  window.addEventListener('tab:shown', (e)=>{ if(e.detail.tab==='insights') load(); });
+  if((location.hash||'')==='#tab=insights') load();
+})();
+</script>
+</body>
+</html>

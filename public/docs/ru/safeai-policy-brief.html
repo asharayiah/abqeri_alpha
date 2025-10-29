@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Abqeri • Safe-AI — Policy Brief</title>
+<link rel="icon" href="/assets/favicon.png">
+<link rel="stylesheet" href="/assets/app.css">
+<style>
+/* Golden theme (matches site) */
+body { background:#000; color:#e7e3d6; }
+a { color:#d4af37; text-decoration:underline; }
+h1,h2,h3 { color:#d4af37; }
+.hero,.card { border:1px solid #3a2f12; border-radius:14px; background:#0a0a0a; }
+.hero { padding:16px; }
+.card { padding:16px; margin:14px 0; }
+.kv { display:grid; grid-template-columns: 220px 1fr; gap:8px 16px; }
+.badge { display:inline-block; padding:2px 8px; border:1px solid #3a2f12; border-radius:12px; color:#d4af37; background:#0b0b0b; }
+.small { font-size:12px; opacity:.9 }
+footer { opacity:.8; margin-top:24px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <h1>Safe-AI — Policy Brief</h1>
+    <p class="small">
+      <a href="/">← Back to Home</a> &nbsp;·&nbsp;
+      <a href="/workbench?lang=en#tab=safe">Open Safe-AI</a>
+    </p>
+    <p>Abqeri Safe-AI is designed to keep people safe while keeping AI useful. It pairs **clear guardrails** with **transparent explanations** and can run in **Hybrid mode** where safety and provenance are enforced by our hardware path when available.</p>
+    <div>
+      <span class="badge">Guardrails</span>
+      <span class="badge">Interpretability</span>
+      <span class="badge">Provenance</span>
+      <span class="badge">Hybrid (Hardware-backed)</span>
+      <span class="badge">Low-cost, accessible</span>
+    </div>
+  </header>
+
+  <section class="card">
+    <h2>What makes it safe?</h2>
+    <div class="kv">
+      <div><b>Explicit content policies</b></div>
+      <div>Requests linked to violence, self-harm, exploitation, or illegal acts are **detected** and **refused** with a humane explanation and alternatives.</div>
+
+      <div><b>Guardrail transparency</b></div>
+      <div>When a safety rule triggers, the UI shows a labeled reason (e.g., <i>“Violent wrongdoing detected”</i>) so users and auditors see **why**.</div>
+
+      <div><b>Streaming + audit trail</b></div>
+      <div>Answers stream token-by-token, accompanied by a policy “meta” record (model, mode, guardrail IDs). Logs can be exported if required.</div>
+
+      <div><b>Hybrid provenance</b></div>
+      <div>When the FPGA channel is connected, the system flips to **Hybrid (Hardware-backed)** mode. The provenance strip shows the active path.</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Why it’s different</h2>
+    <ul>
+      <li><b>Interpretability for users:</b> not just “blocked” — we explain the reason and offer safe alternatives.</li>
+      <li><b>Accessible safety:</b> runs in software today, and becomes hardware-verified when the FPGA is available.</li>
+      <li><b>Inclusive by design:</b> the interface and content localize to EN / AR / RU / ZH and respect RTL.</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>Deployment options</h2>
+    <div class="kv">
+      <div><b>Software fallback</b></div>
+      <div>Runs on Cloudflare Workers AI with the same policy engine and explanations, suitable for pilots now.</div>
+
+      <div><b>Hybrid hardware</b></div>
+      <div>When BLE/Serial detects our FPGA, safety + provenance are hardware-backed. The compute path and badges update live in the UI.</div>
+
+      <div><b>Data protection</b></div>
+      <div>Edge execution; no training on user inputs; optional redaction for PII before inference.</div>
+    </div>
+    <p class="small">See also: <a href="/docs/safeai-safety-notes.html">Safety notes (technical)</a></p>
+  </section>
+
+  <section class="card">
+    <h2>What end-users experience</h2>
+    <ul>
+      <li>**Clear, respectful refusals** when harm is detected, with suggested safe directions.</li>
+      <li>**Gold provenance strip** indicating model and compute path (Software vs Hybrid).</li>
+      <li>**Enter-to-send** chat, RTL support, and streaming output.</li>
+    </ul>
+    <p class="small">Try it live: <a href="/workbench?lang=en#tab=safe">Safe-AI demo</a></p>
+  </section>
+
+  <footer>© Abqeri — Technology with Mercy for Humanity</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+
+<section class="abq-provenance">
+  <div class="abq-status">
+    <span class="abq-dot abq-dot-soft" id="abq-statusDot"></span>
+    <span id="abq-statusText" data-i18n="abq.safeai.status.software">Software Fallback</span>
+    <button id="abq-connectFpga" class="abq-ghost" data-i18n="abq.safeai.action.connect_fpga">Connect FPGA</button>
+  </div>
+  <div class="abq-grid">
+    <div><b data-i18n="abq.safeai.label.compute_path">Compute Path</b><div id="abq-provPath" data-i18n="abq.safeai.path.software">Software fallback</div></div>
+    <div><b data-i18n="abq.safeai.label.model">Model</b><div id="abq-provModel">—</div></div>
+    <div><b data-i18n="abq.safeai.label.guardrails">Guardrails</b><div id="abq-provGuards" data-i18n="abq.safeai.guard.none">None</div></div>
+  </div>
+  <p class="abq-small" data-i18n="abq.safeai.hint">When FPGA is connected, the compute path flips to <i>Hybrid (Hardware-backed)</i> and each answer is tagged with provenance.</p>
+</section>

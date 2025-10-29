@@ -1,0 +1,12 @@
+<!-- Cloudflare Web Analytics (loads only if token is set) -->
+<script>
+(function(){
+  var token = (window.ABQ_ENV && ABQ_ENV.CF_ANALYTICS_TOKEN) || "{{CF_ANALYTICS_TOKEN}}";
+  if (!token || token==="YOUR_CF_ANALYTICS_TOKEN") return;
+  var s = document.createElement('script');
+  s.defer = true;
+  s.src = "https://static.cloudflareinsights.com/beacon.min.js";
+  s.setAttribute('data-cf-beacon', JSON.stringify({ token: token }));
+  document.head.appendChild(s);
+})();
+</script>

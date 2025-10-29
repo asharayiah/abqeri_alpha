@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>الأسعار والتجربة — أبقري</title>
+<link rel="icon" href="/assets/favicon.png">
+<link rel="stylesheet" href="/assets/app.css">
+</head>
+<body>
+<div class="header">
+  <a class="brand" href="/"><img src="/assets/logo.png" alt=""><span>أبقري</span></a>
+  <div class="nav">
+    <a id="nav-about" href="/about/ar/">عن أبقري</a>
+    <a id="nav-pricing" href="/pricing/ar/">الأسعار</a>
+    <a id="nav-ledger" href="/ledger.html">دفتر الحسابات</a>
+    <a id="nav-login" href="/auth/login.html">الدخول</a>
+    <a id="nav-register" class="btn" href="/auth/register.html">التسجيل</a>
+    <select id="lang-switch" class="btn ghost">
+      <option value="en">EN</option>
+      <option value="ar" selected>AR</option>
+      <option value="ru">RU</option>
+      <option value="zh">ZH</option>
+    </select>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="card">
+    <h1 style="color:var(--abq-gold);margin:.2rem 0">أسعار واضحة. تجربة 14 يوماً لكل الخطط المدفوعة.</h1>
+    <p class="small" style="opacity:.95">ابدأ مجاناً، ثم حدّث متى شئت. تبدأ التجربة عند الاشتراك.</p>
+
+    <div class="row">
+      <div class="card">
+        <h3 style="color:var(--abq-gold);margin-top:0">رحمة — مجاني</h3>
+        <ul class="small">
+          <li>ذكاء آمن (بحدود) مع حراسات برمجية</li>
+          <li>موسيقى-ذكاء محلي للتعلّم</li>
+          <li>محاكي الكون (نسخة عرض)</li>
+        </ul>
+        <a class="btn" href="/auth/register.html">أنشئ حساباً مجانياً</a>
+      </div>
+
+      <div class="card">
+        <h3 style="color:var(--abq-gold);margin-top:0">رحمة — لايت (تجربة)</h3>
+        <ul class="small">
+          <li>ذكاء آمن بحدود أعلى</li>
+          <li>أولوية عبر الممر Relay</li>
+          <li>تجربة 14 يوماً</li>
+        </ul>
+        <a class="btn" href="/subscribe/ar/#rahma-lite">ابدأ التجربة</a>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="card">
+        <h3 style="color:var(--abq-gold);margin-top:0">رحمة — بلس (تجربة)</h3>
+        <ul class="small">
+          <li>ذكاء آمن + تصدير موسيقى-ذكاء</li>
+          <li>تشغيلات دفعية لمحاكي الكون</li>
+          <li>تجربة 14 يوماً</li>
+        </ul>
+        <a class="btn" href="/subscribe/ar/#rahma-plus">ابدأ التجربة</a>
+      </div>
+
+      <div class="card">
+        <h3 style="color:var(--abq-gold);margin-top:0">رحمة — مختبر / مؤسسة (تجربة)</h3>
+        <ul class="small">
+          <li>دعم رائد لحوسبة هجينة-QPU</li>
+          <li>حسابات فريق وحوكمة</li>
+          <li>تجربة 14 يوماً</li>
+        </ul>
+        <a class="btn" href="/subscribe/ar/#rahma-lab">ابدأ التجربة</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="color:var(--abq-gold);margin-top:0">رحمة — راعٍ</h3>
+      <p class="small">ادعم إتاحة الوصول لغير القادرين (مدارس، مختبرات، عيادات). يحصل الراعي على مزايا بلس كاملة.</p>
+      <a class="btn" href="/subscribe/ar/#rahma-patron">كن راعياً</a>
+    </div>
+  </section>
+</div>
+
+<footer>© <span id="y"></span> أبقري — تقنية برحمة لخدمة الإنسانية</footer>
+<script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+<script src="/assets/app.js" defer></script>
+</body>
+</html>

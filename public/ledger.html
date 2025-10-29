@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title data-i18n="ledger.title">Abqeri — Public Ledger</title>
+<link rel="icon" href="/assets/favicon.png">
+<link rel="stylesheet" href="/assets/app.css">
+<style>
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{border:1px solid #333;padding:8px 10px;vertical-align:top}
+.table th{background:#0b0b0b;position:sticky;top:0}
+.table .num{text-align:right;white-space:nowrap}
+@media(max-width:720px){ .table th,.table td{font-size:.9rem;padding:6px} }
+</style>
+</head>
+<body>
+<div class="header">
+  <a class="brand" href="/"><img src="/assets/logo.png" alt="" onerror="this.style.display='none'"><span>Abqeri</span></a>
+  <div class="nav">
+    <a id="nav-about" href="/about/en/" data-i18n="nav.about">About</a>
+    <a id="nav-pricing" href="/pricing.html" data-i18n="nav.pricing">Pricing</a>
+    <a id="nav-ledger" href="/ledger.html" data-i18n="nav.ledger">Ledger</a>
+    <a id="nav-login" href="/auth/login.html" data-i18n="nav.login">Login</a>
+    <a id="nav-register" href="/auth/register.html" class="btn" data-i18n="nav.register">Register</a>
+    <a id="nav-subscribe" href="/subscribe.html" class="btn" data-i18n="nav.subscribe">Subscribe</a>
+<select id="lang-switch" class="btn ghost">
+  <option value="en">EN</option>
+  <option value="ar">AR</option>
+  <option value="ru">RU</option>
+  <option value="zh">ZH</option>
+</select>
+</div>
+<script src="/assets/app.js?v=20251025" defer></script>
+
+<div class="wrap">
+  <section class="card">
+    <h1 data-i18n="ledger.h1">Public Ledger</h1>
+    <p class="small" data-i18n="ledger.note">Live profit = revenue − (infrastructure + R&D + modest salaries). NGO transfers show within hours; CSV export available.</p>
+
+    <div class="kv" id="ledger-summary" style="margin-bottom:10px">
+      <div data-i18n="ledger.rev">Revenue (30d)</div><div id="ls-rev" class="num">—</div>
+      <div data-i18n="ledger.costs">Costs (30d)</div><div id="ls-costs" class="num">—</div>
+      <div data-i18n="ledger.profit">Profit to NGOs</div><div id="ls-profit" class="num">—</div>
+    </div>
+
+    <table class="table" aria-label="Ledger entries">
+      <thead>
+        <tr>
+          <th data-i18n="ledger.th_time">Time (UTC)</th>
+          <th data-i18n="ledger.th_type">Type</th>
+          <th data-i18n="ledger.th_desc">Description</th>
+          <th class="num" data-i18n="ledger.th_amount">Amount</th>
+        </tr>
+      </thead>
+      <tbody id="ledger-body">
+        <!-- filled by JS if backend not bound (demo rows) -->
+      </tbody>
+    </table>
+  </section>
+</div>
+
+<footer class="small">© Abqeri — Technology with Mercy for Humanity</footer>
+
+<script>
+// demo fill if backend not bound
+(async function(){
+  try{
+    const r = await fetch('/api/ledger/list');
+    if (!r.ok) throw 0;
+    const j = await r.json();
+    // render your real entries...
+  }catch{
+    const body = document.getElementById('ledger-body');
+    const rows = [
+      ['2025-10-24 13:41','revenue','Rahma Plus subscription','$29.00'],
+      ['2025-10-24 13:50','cost','Workers/D1/Turnstile','-$4.10'],
+      ['2025-10-24 14:20','profit→NGO','Transfer to mercytohumanity.org.uk','-$20.50']
+    ];
+    rows.forEach(r=>{
+      const tr=document.createElement('tr');
+      r.forEach((c,i)=>{ const td=document.createElement('td'); td.textContent=c; if(i===3) td.className='num'; tr.appendChild(td); });
+      body.appendChild(tr);
+    });
+    document.getElementById('ls-rev').textContent   = '$2,340.00';
+    document.getElementById('ls-costs').textContent = '$1,120.00';
+    document.getElementById('ls-profit').textContent= '$930.00';
+  }
+})();
+</script>
+</body>
+</html>

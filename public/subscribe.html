@@ -1,0 +1,74 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title data-i18n="subscribe.title">Subscribe — Abqeri</title>
+<link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="/assets/app.css">
+</head><body>
+<div class="header">
+  <a class="brand" href="/"><img src="/assets/logo.png" alt="" onerror="this.style.display='none'"><span>Abqeri</span></a>
+  <div class="nav">
+    <a id="nav-about" href="/about/en/">About</a>
+    <a id="nav-pricing" href="/pricing.html">Pricing</a>
+    <a id="nav-ledger" href="/ledger.html">Ledger</a>
+    <a id="nav-login" href="/auth/login.html">Login</a>
+    <a id="nav-register" href="/auth/register.html" class="btn">Register</a>
+    <a id="nav-subscribe" href="/subscribe.html" class="btn">Subscribe</a>
+<select id="lang-switch" class="btn ghost">
+  <option value="en">EN</option>
+  <option value="ar">AR</option>
+  <option value="ru">RU</option>
+  <option value="zh">ZH</option>
+</select>
+  </div>
+</div>
+<script src="/assets/app.js?v=20251025" defer></script>
+
+<div class="wrap" style="max-width:900px">
+  <div class="card">
+    <h2 data-i18n="subscribe.title">Choose a Rahma plan</h2>
+    <p class="small" data-i18n="subscribe.trial_note">All plans include a 14-day free trial…</p>
+    <div class="row">
+      <div class="card">
+        <h3 data-i18n="pricing.free">Rahma Free</h3>
+        <ul><li>Safe-AI & Music-AI</li><li>Limited usage</li></ul>
+        <button class="btn" data-plan="rahma_free" data-i18n="subscribe.start_free">Start (Free)</button>
+      </div>
+      <div class="card">
+        <h3 data-i18n="pricing.lite">Rahma Lite</h3>
+        <ul><li>+ Universe</li><li>Community support</li></ul>
+        <button class="btn" data-plan="rahma_lite" data-i18n="subscribe.start_trial">Start 14-day trial</button>
+      </div>
+      <div class="card">
+        <h3 data-i18n="pricing.plus">Rahma Plus</h3>
+        <ul><li>+ Hybrid-QPC</li><li>Priority support</li></ul>
+        <button class="btn" data-plan="rahma_plus" data-i18n="subscribe.start_trial">Start 14-day trial</button>
+      </div>
+      <div class="card">
+        <h3 data-i18n="pricing.lab">Rahma Lab</h3>
+        <ul><li>Research features</li><li>Higher limits</li></ul>
+        <button class="btn" data-plan="rahma_lab" data-i18n="subscribe.start_trial">Start 14-day trial</button>
+      </div>
+      <div class="card">
+        <h3 data-i18n="pricing.inst">Institution / Patron</h3>
+        <ul><li>Custom limits</li><li>Support SLA</li></ul>
+        <button class="btn" data-plan="rahma_institution" data-i18n="subscribe.contact_trial">Contact / Trial</button>
+      </div>
+    </div>
+    <div id="out" class="small" style="margin-top:10px"></div>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('button[data-plan]').forEach(btn=>{
+  btn.addEventListener('click', async ()=>{
+    const out=document.getElementById('out'); out.textContent='…';
+    const plan=btn.getAttribute('data-plan');
+    try{
+      const r=await fetch('/api/billing/checkout',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({plan})});
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      const j=await r.json(); if(j.url){ location.href=j.url; return; }
+      out.textContent='Unable to start checkout.';
+    }catch(e){ console.error(e); out.textContent='Checkout failed. Try again.'; }
+  });
+});
+</script>
+</body></html>

@@ -1,0 +1,31 @@
+{
+  "abq": {
+    "safeai": {
+      "status": {
+        "software": "Software Fallback",
+        "hybrid": "Hybrid (Hardware-Backed)"
+      },
+      "action": {
+        "connect_fpga": "Connect FPGA"
+      },
+      "label": {
+        "compute_path": "Compute Path",
+        "model": "Model",
+        "guardrails": "Guardrails"
+      },
+      "path": {
+        "software": "Software fallback",
+        "hybrid": "Hybrid (Hardware-backed)"
+      },
+      "guard": {
+        "none": "None"
+      },
+      "hint": "When FPGA is connected, the compute path flips to <i>Hybrid (Hardware-backed)</i> and each answer is tagged with provenance.",
+      "alert": {
+        "no_serial": "Web Serial not supported. You can still use software fallback.",
+        "handshake_fail": "Device handshake failed. Staying in software fallback.",
+        "connect_fail": "Could not connect to FPGA. Staying in software fallback."
+      }
+    }
+  }
+}

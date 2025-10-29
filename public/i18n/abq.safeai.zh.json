@@ -1,0 +1,31 @@
+{
+  "abq": {
+    "safeai": {
+      "status": {
+        "software": "软件回退",
+        "hybrid": "混合（硬件支持）"
+      },
+      "action": {
+        "connect_fpga": "连接 FPGA"
+      },
+      "label": {
+        "compute_path": "计算路径",
+        "model": "模型",
+        "guardrails": "安全护栏"
+      },
+      "path": {
+        "software": "软件回退",
+        "hybrid": "混合（硬件支持）"
+      },
+      "guard": {
+        "none": "无"
+      },
+      "hint": "当连接 FPGA 后，计算路径会切换到 <i>混合（硬件支持）</i>，每条回答都会带有来源标记。",
+      "alert": {
+        "no_serial": "浏览器不支持 Web Serial。仍可使用软件回退模式。",
+        "handshake_fail": "设备握手失败，将保持软件回退模式。",
+        "connect_fail": "无法连接到 FPGA，将保持软件回退模式。"
+      }
+    }
+  }
+}
