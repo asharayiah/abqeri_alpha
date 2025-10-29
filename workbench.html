@@ -1,318 +1,64 @@
 <!doctype html>
 <html lang="en" dir="ltr">
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Abqeri Workbench — Safe-AI • Music-AI • Universe • Hybrid-QPU</title>
-  <link rel="icon" href="/assets/favicon.png">
-  <link rel="stylesheet" href="/assets/app.css?v=20251029g">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Abqeri • Workbench</title>
+    <link href="/assets/app.css" rel="stylesheet" />
+    <link href="/assets/safeai.css" rel="stylesheet" />
+    <style>
+      :root { --gold:#d4af37; --ink:#0b0b0c; }
+      body { background:#000; color:#eee; }
+      .wb { max-width:1100px; margin:24px auto; padding:16px; }
+      .card { background:linear-gradient(180deg,#0b0b0c,#121214); border:1px solid #2c2c2c; border-radius:12px; overflow:hidden; }
+      .hdr { display:flex; align-items:center; gap:12px; padding:12px 14px; border-bottom:1px solid #222; color:var(--gold); font-weight:600; }
+      .safeai-grid { display:grid; grid-template-columns: 1fr 360px; gap:14px; padding:14px; }
+      @media (max-width: 980px){ .safeai-grid{ grid-template-columns:1fr; } }
+      .pane { background:#0e0e10; border:1px solid #2b2b2b; border-radius:10px; overflow:hidden; }
+      .subhdr { padding:10px 12px; border-bottom:1px solid #242426; color:#cfc; font-size:13px }
+      #chat-stream { padding:12px; min-height:240px; max-height:420px; overflow:auto; white-space:pre-wrap; }
+      #chat-form { display:flex; gap:8px; padding:10px; border-top:1px solid #242426; }
+      #chat-input { flex:1; background:#101014; border:1px solid #303035; color:#eee; border-radius:8px; padding:10px 12px; resize:vertical; min-height:42px; }
+      #chat-send { background:var(--gold); color:#111; border:none; padding:10px 14px; border-radius:8px; font-weight:600; cursor:pointer; }
+      #chat-send:disabled { opacity:.6; cursor:not-allowed; }
+      .meta-box { padding:10px 12px; font-size:12px; color:#cfcfcf }
+      .meta-row { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 0; border-bottom:1px dashed #222; }
+      .meta-row:last-child{ border-bottom:0; }
+      .chip { border:1px solid #4a3a13; color:var(--gold); background:#14120c; padding:3px 7px; border-radius:999px; font-size:11px; }
+      a { color:var(--gold); text-decoration:none; }
+    </style>
+  </head>
+  <body>
+    <main class="wb">
+      <section class="card" id="safeai">
+        <div class="hdr">🔒 Safe-AI (Workers AI, hybrid-ready)</div>
+        <div class="safeai-grid">
+          <div class="pane">
+            <div class="subhdr">Chat</div>
+            <div id="chat-stream"></div>
+            <form id="chat-form" novalidate>
+              <textarea id="chat-input" placeholder="Type your message… (Shift+Enter for newline)"></textarea>
+              <button id="chat-send" type="submit">Send</button>
+            </form>
+          </div>
+          <aside class="pane">
+            <div class="subhdr">Compute path & model</div>
+            <div class="meta-box" id="chat-meta">
+              <div class="meta-row"><div>Compute Path</div><div><span class="chip" id="chip-compute">Software</span></div></div>
+              <div class="meta-row"><div>Model</div><div id="meta-model">@cf/meta/llama-3.1-8b-instruct</div></div>
+              <div class="meta-row"><div>Guardrails</div><div><span id="meta-mode">General</span> • <span id="meta-safety">Moderate</span> • <span id="meta-lang">en</span></div></div>
+            </div>
+            <div class="meta-box" style="border-top:1px solid #242426; margin-top:8px; padding-top:12px">
+              Docs: <a href="/docs/en/safeai-policy-brief">Policy brief</a> • <a href="/docs/en/safeai-safety-notes">Safety notes</a>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
 
-  <style>
-    :root{--gold:#f5c84c;--gold-2:#ffd56b;--ink:#0a0a0a;--bg:#000;--frame:#3a2a00;--paper:#0b0b0b;--text:#efe3bf;--muted:#bfa86a;}
-    body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
-    .wb-wrap{min-height:100vh;display:flex;flex-direction:column}
-    header.wb-top{display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;border-bottom:1px solid var(--frame);background:var(--ink)}
-    header .brand{display:flex;align-items:center;gap:.5rem}
-    header .brand img{height:28px}
-    header .brand .name{font-weight:800;letter-spacing:.08em;color:var(--gold)}
-    nav.wb-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-left:auto}
-    nav.wb-tabs a{color:#caa646;text-decoration:none;padding:.4rem .7rem;border:1px solid var(--frame);border-radius:.6rem}
-    nav.wb-tabs a.active{background:#1a1402;color:var(--gold-2)}
-    main.wb-main{flex:1;display:grid;grid-template-columns:1fr;gap:1rem;padding:1rem}
-    @media(min-width:1024px){main.wb-main{grid-template-columns:1.2fr .8fr}}
-    .pane{border:1px solid var(--frame);background:var(--paper);border-radius:1rem;padding:1rem}
-    .pane h2{margin:0 0 .75rem 0;color:var(--gold);font-size:1.05rem;font-weight:700}
-    .chip{display:inline-flex;align-items:center;gap:.35rem;border:1px solid var(--frame);border-radius:999px;padding:.15rem .6rem;font-size:.8rem;color:#e7d6a6;background:#161003}
-    .chat-stream{white-space:pre-wrap;line-height:1.55;color:var(--text);background:var(--ink);border:1px solid var(--frame);border-radius:.75rem;padding:.75rem;min-height:180px;max-height:50vh;overflow:auto}
-    .chat-bar{display:flex;gap:.5rem;margin-top:.6rem}
-    .chat-bar textarea{flex:1;resize:vertical;min-height:48px;max-height:30vh;border-radius:.6rem;border:1px solid var(--frame);background:var(--ink);color:var(--text);padding:.6rem .7rem}
-    .chat-bar button{border:1px solid var(--frame);background:#1a1402;color:var(--gold-2);border-radius:.6rem;padding:.55rem .9rem;font-weight:600;cursor:pointer}
-    footer.wb-foot{margin-top:auto;border-top:1px solid var(--frame);background:var(--ink);color:var(--muted);padding:.8rem 1rem;text-align:center}
-  </style>
-</head>
-<body class="wb-wrap">
-  <header class="wb-top">
-    <div class="brand"><img src="/assets/logo.png" alt="Abqeri logo"><span class="name">ABQERI</span></div>
-    <nav class="wb-tabs" id="tabs">
-      <a href="#tab=safeai" class="active">Safe-AI</a>
-      <a href="#tab=music">Music-AI</a>
-      <a href="#tab=universe">Universe</a>
-      <a href="#tab=hybrid">Hybrid-QPU</a>
-      <a href="/about/en/">About</a>
-    </nav>
-  </header>
-
-  <main class="wb-main">
-    <!-- SAFE-AI -->
-    <section class="pane" id="safeai-pane" data-tab="safeai">
-      <h2>Safe-AI</h2>
-      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin:.5rem 0 1rem">
-        <span id="provenanceChip" class="chip">Software</span>
-        <span class="chip">Model: <b id="modelLabel">@cf/meta/llama-3.1-8b-instruct</b></span>
-        <label class="chip">Mode
-          <select id="modeSel" style="background:transparent;color:var(--gold-2);border:none">
-            <option>General</option><option selected>Scholar</option><option>Engineer</option><option>Philosopher</option>
-          </select>
-        </label>
-        <label class="chip">Safety
-          <select id="safetySel" style="background:transparent;color:var(--gold-2);border:none">
-            <option>Moderate</option><option>Strict</option><option>Lenient</option>
-          </select>
-        </label>
-        <label class="chip">Lang
-          <select id="langSel" style="background:transparent;color:var(--gold-2);border:none">
-            <option value="en" selected>EN</option><option value="ar">AR</option><option value="ru">RU</option><option value="zh">ZH</option>
-          </select>
-        </label>
-      </div>
-
-      <div class="chat-wrap">
-
-        <form id="chat-form" class="chat-bar" autocomplete="off">
-          <textarea id="chat-input" rows="2" placeholder="Type a message… (Enter = send, Shift+Enter = newline)"></textarea>
-          <button id="chat-send" type="submit">Send</button>
-        </form>
-      </div>
-    </section>
-
-    <!-- RIGHT INFO -->
-    <aside class="pane" id="right-pane">
-      <h2>Context</h2>
-      <div class="chip">Path: <span id="kv-path" style="margin-left:.4rem">Software</span></div>
-      <div class="chip">Model: <span id="kv-model" style="margin-left:.4rem">@cf/meta/llama-3.1-8b-instruct</span></div>
-    </aside>
-
-    <!-- STUBS -->
-    <section class="pane" id="music-pane" data-tab="music" hidden><h2>Music-AI</h2><p class="u-faint">Coming soon.</p></section>
-    <section class="pane" id="universe-pane" data-tab="universe" hidden><h2>Universe</h2><p class="u-faint">Controls coming.</p></section>
-    <section class="pane" id="hybrid-pane" data-tab="hybrid" hidden><h2>Hybrid-QPU</h2><p class="u-faint">BLE/Serial stubs coming.</p></section>
-  </main>
-
-  <footer class="wb-foot">© <span id="y"></span> Abqeri — Technology with Mercy</footer>
-
-  <!-- Inline Safe-AI client (no external /assets/safeai.js) -->
-  <script>
-  (function(){
-    const $ = (s, r=document)=>r.querySelector(s);
-    const tabs = $('#tabs');
-    function show(tab){
-      document.querySelectorAll('[data-tab]').forEach(p=>p.hidden = (p.dataset.tab!==tab));
-      tabs.querySelectorAll('a').forEach(a=>a.classList.toggle('active', a.href.includes('='+tab)));
-    }
-    function getTab(){ const m=location.hash.match(/tab=([a-z]+)/i); return (m&&m[1])||'safeai'; }
-    window.addEventListener('hashchange',()=>show(getTab())); show(getTab());
-    $('#y').textContent = new Date().getFullYear();
-
-    const streamEl = $('#chat-stream');
-    const form = $('#chat-form');
-    const input = $('#chat-input');
-    const btn = $('#chat-send');
-    const modeSel = $('#modeSel'), safetySel = $('#safetySel'), langSel = $('#langSel');
-    const provChip = $('#provenanceChip'), kvPath=$('#kv-path'), kvModel=$('#kv-model'), modelLabel=$('#modelLabel');
-
-    function append(t){ streamEl.textContent += t; streamEl.scrollTop = streamEl.scrollHeight; }
-    function nl(){ append('\\n'); }
-
-    async function streamChat(payload){
-      const msg = input.value.trim();
-      if (msg){ append(`\\nYou: ${msg}\\n\\nAbqeri: `); }
-
-      const res = await fetch('/api/ai/chat', {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify(payload)
-      });
-      if(!res.ok){ nl(); append(`[error ${res.status}] Service error. Try again.`); nl(); return; }
-
-      const reader = res.body.getReader();
-      const dec = new TextDecoder();
-      let buf = '';
-
-      while (true) {
-        const {done, value} = await reader.read();
-        if (done) break;
-        buf += dec.decode(value, {stream:true});
-
-        let i;
-        while ((i = buf.indexOf('\\n')) >= 0){
-          const line = buf.slice(0,i).trimEnd();
-          buf = buf.slice(i+1);
-          if (!line || !line.startsWith('data:')) continue;
-
-          const json = line.slice(5).trim();
-          if (json === '[DONE]'){ nl(); return; }
-
-          try{
-            const obj = JSON.parse(json);
-            if (obj.meta?.provenance){
-              const p = obj.meta.provenance;
-              const path = p.hybrid ? 'Hybrid' : 'Software';
-              provChip.textContent = path; kvPath.textContent = path;
-              if (p.model){ kvModel.textContent = p.model; modelLabel.textContent = p.model; }
-              continue;
-            }
-            if (typeof obj.response === 'string'){
-              append(obj.response);
-            } else if (obj.response && typeof obj.response === 'object'){
-              // byte-object fallback → text
-              const bytes = Object.values(obj.response);
-              append(new TextDecoder().decode(new Uint8Array(bytes)));
-            }
-          }catch(e){ /* ignore parse errors */ }
-        }
-      }
-      nl();
-    }
-
-    // Enter submits (Shift+Enter = newline)
-    input.addEventListener('keydown', (e)=>{
-      if (e.key==='Enter' && !e.shiftKey){ e.preventDefault(); form.requestSubmit(); }
-    });
-
-    form.addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      const msg = input.value.trim(); if (!msg) return;
-      btn.disabled = true;
-      const payload = {
-        messages:[{role:'user', content: msg}],
-        mode: (modeSel?.value || 'General'),
-        safety: (safetySel?.value || 'Moderate'),
-        lang: (langSel?.value || 'en')
-      };
-      try { await streamChat(payload); }
-      catch(err){ append(`\\n[network] ${err?.message||err}\\n`); }
-      finally { btn.disabled=false; input.value=''; input.focus(); }
-    });
-  })();
-  </script>
-<script>
-/* ===== ABQERI SAFE-AI FORCE WIRE ===== */
-(function(){
-  const $ = s => document.querySelector(s);
-  function hardReset(id){
-    const el = document.getElementById(id);
-    if (!el) return null;
-    const neo = el.cloneNode(true);           // drop ALL previous listeners
-    el.replaceWith(neo);
-    return neo;
-  }
-
-  // Hard reset SAFE-AI nodes to strip stale handlers
-  const stream  = hardReset('chat-stream')   || (function(){ const d=document.createElement('div'); d.id='chat-stream'; return d; })();
-  const form    = hardReset('chat-form');
-  const input   = hardReset('chat-input');
-  const sendBtn = hardReset('chat-send');
-
-  // If the older HTML had canned text inside the stream, clear it
-  if (stream) stream.textContent = '';
-
-  // Small guard if IDs changed
-  if (!form || !input || !sendBtn) {
-    console.warn('[SafeAI] Missing required nodes. Check IDs: chat-form, chat-input, chat-send, chat-stream');
-    return;
-  }
-
-  // Also reset selectors for chips (optional)
-  const modeSel   = document.getElementById('modeSel');
-  const safetySel = document.getElementById('safetySel');
-  const langSel   = document.getElementById('langSel');
-  const provChip  = document.getElementById('provenanceChip');
-  const kvPath    = document.getElementById('kv-path');
-  const kvModel   = document.getElementById('kv-model');
-  const modelLbl  = document.getElementById('modelLabel');
-
-  function append(t){ stream.textContent += t; stream.scrollTop = stream.scrollHeight; }
-  function nl(){ append('\n'); }
-
-  async function streamChat(payload){
-    const msg = (input.value || '').trim();
-    if (msg) append(`\nYou: ${msg}\n\nAbqeri: `);
-
-    const res = await fetch('/api/ai/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-    if (!res.ok){ nl(); append(`[error ${res.status}] Service error. Try again.`); nl(); return; }
-
-    const reader = res.body.getReader();
-    const dec = new TextDecoder();
-    let buf = '';
-
-    while (true) {
-      const {done, value} = await reader.read();
-      if (done) break;
-      buf += dec.decode(value, {stream:true});
-
-      let idx;
-      while ((idx = buf.indexOf('\n')) >= 0) {
-        const line = buf.slice(0, idx).trimEnd();
-        buf = buf.slice(idx + 1);
-        if (!line || !line.startsWith('data:')) continue;
-
-        const json = line.slice(5).trim();
-        if (json === '[DONE]'){ nl(); return; }
-
-        try {
-          const obj = JSON.parse(json);
-
-          // provenance meta
-          if (obj.meta?.provenance){
-            const p = obj.meta.provenance;
-            const path = p.hybrid ? 'Hybrid' : 'Software';
-            if (provChip) provChip.textContent = path;
-            if (kvPath) kvPath.textContent = path;
-            if (p.model && kvModel) { kvModel.textContent = p.model; if (modelLbl) modelLbl.textContent = p.model; }
-            continue;
-          }
-
-          // normal token
-          if (typeof obj.response === 'string') {
-            append(obj.response);
-            continue;
-          }
-          // byte-object fallback (your logs show this case)
-          if (obj.response && typeof obj.response === 'object') {
-            const bytes = Object.values(obj.response);
-            append(new TextDecoder().decode(new Uint8Array(bytes)));
-          }
-        } catch(e) {
-          // ignore malformed lines
-        }
-      }
-    }
-    nl();
-  }
-
-  // Enter submits (Shift+Enter = newline)
-  input.addEventListener('keydown', (e)=>{
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      form.requestSubmit();
-    }
-  });
-
-  // Our submit handler (after hardReset, we’re the only one)
-  form.addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    const msg = (input.value || '').trim();
-    if (!msg) return;
-    sendBtn.disabled = true;
-    const payload = {
-      messages: [{ role: 'user', content: msg }],
-      mode:   (modeSel?.value   || 'General'),
-      safety: (safetySel?.value || 'Moderate'),
-      lang:   (langSel?.value   || 'en'),
-    };
-    try { await streamChat(payload); }
-    catch(err){ append(`\n[network] ${err?.message || err}\n`); }
-    finally { sendBtn.disabled = false; input.value=''; input.focus(); }
-  });
-
-  // As a final guard, blank any late canned injection after the first tick
-  setTimeout(()=>{ if (stream && /We answer with mercy/.test(stream.textContent)) stream.textContent=''; }, 0);
-
-  console.log('[SafeAI] client wired and overriding stale handlers.');
-})();
-</script>
-</body>
+    <!-- Load our scripts (no inline code; CSP will block stray inline) -->
+    <script src="/assets/app.js?v=2025-10-29-3" defer></script>
+    <script src="/assets/safeai.js?v=2025-10-29-3" defer></script>
+  </body>
 </html>
