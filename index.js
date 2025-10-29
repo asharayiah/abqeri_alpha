@@ -9,6 +9,9 @@
 export default {
   async fetch(req, env, ctx) {
     try {
+headers.set('Content-Security-Policy',
+  "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'none'; frame-ancestors 'none';"
+);
       const url = new URL(req.url);
       if (req.method === "GET" && (url.pathname === "/" || url.pathname === "/index.html")) {
         return serveStatic("public/index.html");
